@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 
 class CategoryController extends GetxController {
-  var selectedCategory = 0.obs;
+  int selectedCategory = 0;
 
-  final categories = [
+  final List<String> categories = const [
     "Semua",
     "Ulang Tahun",
     "Roti",
@@ -11,7 +11,13 @@ class CategoryController extends GetxController {
     "Cookies",
   ];
 
+  /// nanti akan diisi dari API
+  final List<Map<String, dynamic>> products = [];
+
   void changeCategory(int index) {
-    selectedCategory.value = index;
+    if (selectedCategory == index) return;
+
+    selectedCategory = index;
+    update();
   }
 }

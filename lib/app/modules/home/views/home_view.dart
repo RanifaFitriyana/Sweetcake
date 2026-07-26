@@ -26,6 +26,7 @@ class HomeView extends GetView<HomeController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
+            fontSize: 28,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -37,17 +38,19 @@ class HomeView extends GetView<HomeController> {
         ],
       ),
 
+      bottomNavigationBar: const CustomBottomNavbar(currentIndex: 0),
+
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
-          /// Search
+
+          /// SEARCH
           TextField(
             decoration: InputDecoration(
               hintText: "Cari kue favoritmu...",
               prefixIcon: const Icon(Icons.search),
               filled: true,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide.none,
@@ -57,7 +60,7 @@ class HomeView extends GetView<HomeController> {
 
           const SizedBox(height: 20),
 
-          /// Banner
+          /// BANNER
           Container(
             height: 170,
             decoration: BoxDecoration(
@@ -84,8 +87,8 @@ class HomeView extends GetView<HomeController> {
                         const SizedBox(height: 15),
 
                         SizedBox(
-                          height: 36,
                           width: 130,
+                          height: 36,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
@@ -122,14 +125,18 @@ class HomeView extends GetView<HomeController> {
 
           const SizedBox(height: 25),
 
-          /// Kategori
+          /// KATEGORI
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 "Kategori",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
+
               TextButton(
                 onPressed: () {
                   Get.toNamed(Routes.CATEGORY);
@@ -142,7 +149,7 @@ class HomeView extends GetView<HomeController> {
           const SizedBox(height: 15),
 
           SizedBox(
-            height: 85,
+            height: 90,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
@@ -157,14 +164,18 @@ class HomeView extends GetView<HomeController> {
 
           const SizedBox(height: 25),
 
-          /// Produk
+          /// PRODUK TERLARIS
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
                 "Produk Terlaris",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
+
               TextButton(
                 onPressed: () {
                   Get.toNamed(Routes.CATEGORY);
@@ -180,24 +191,41 @@ class HomeView extends GetView<HomeController> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: 4,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 15,
               mainAxisSpacing: 15,
               childAspectRatio: .72,
             ),
             itemBuilder: (context, index) {
-              return productCard(
-                "Red Velvet Cake",
-                "Rp 85.000",
-                "assets/images/cake.png",
+
+              return InkWell(
+                borderRadius: BorderRadius.circular(18),
+                onTap: () {
+                  Get.toNamed(
+                    Routes.DETAIL_PRODUCT,
+                    arguments: {
+                      "name": "Red Velvet Cake",
+                      "price": "Rp 85.000",
+                      "priceInt": 85000,
+                      "rating": "4.9",
+                      "image": "assets/images/cake.png",
+                      "description":
+                          "Kue red velvet premium dengan tekstur lembut dan cream cheese berkualitas tinggi. Cocok untuk ulang tahun maupun acara spesial.",
+                    },
+                  );
+                },
+                child: productCard(
+                  "Red Velvet Cake",
+                  "Rp 85.000",
+                  "assets/images/cake.png",
+                ),
               );
             },
           ),
         ],
       ),
-
-      bottomNavigationBar: const CustomBottomNavbar(currentIndex: 0),
     );
   }
 
@@ -209,25 +237,47 @@ class HomeView extends GetView<HomeController> {
           CircleAvatar(
             radius: 28,
             backgroundColor: Colors.pink.shade100,
-            child: Text(emoji, style: const TextStyle(fontSize: 24)),
+            child: Text(
+              emoji,
+              style: const TextStyle(fontSize: 24),
+            ),
           ),
+
           const SizedBox(height: 8),
+
           Text(title),
         ],
       ),
     );
   }
 
-  Widget productCard(String title, String price, String image) {
+  Widget productCard(
+      String title,
+      String price,
+      String image,
+      ) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: Center(child: Image.asset(image))),
+
+            Expanded(
+              child: Center(
+                child: Hero(
+                  tag: title,
+                  child: Image.asset(
+                    image,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
 
             const SizedBox(height: 10),
 
@@ -235,24 +285,32 @@ class HomeView extends GetView<HomeController> {
               title,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 15,
+              ),
             ),
 
-            const SizedBox(height: 4),
+            const SizedBox(height: 5),
 
             Text(
               price,
               style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
             ),
 
-            const SizedBox(height: 4),
+            const SizedBox(height: 5),
 
             const Row(
               children: [
-                Icon(Icons.star, size: 16, color: Colors.amber),
+                Icon(
+                  Icons.star,
+                  size: 16,
+                  color: Colors.amber,
+                ),
                 SizedBox(width: 4),
                 Text("4.9"),
               ],

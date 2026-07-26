@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/custom_bottom_navbar.dart';
 import '../../../widgets/custom_drawer.dart';
@@ -19,6 +20,7 @@ class CategoryView extends GetView<CategoryController> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
         title: const Text(
           "Kategori",
           style: TextStyle(
@@ -26,7 +28,6 @@ class CategoryView extends GetView<CategoryController> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           IconButton(
             onPressed: () {},
@@ -39,7 +40,7 @@ class CategoryView extends GetView<CategoryController> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            /// Search
+            /// SEARCH
             TextField(
               decoration: InputDecoration(
                 hintText: "Cari produk...",
@@ -55,50 +56,54 @@ class CategoryView extends GetView<CategoryController> {
 
             const SizedBox(height: 20),
 
-            /// Tab kategori
+            /// TAB KATEGORI
             SizedBox(
               height: 45,
-              child: Obx(
-                () => ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: controller.categories.length,
-                  itemBuilder: (context, index) {
-                    final active = controller.selectedCategory.value == index;
+              child: GetBuilder<CategoryController>(
+                builder: (controller) {
+                  return ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: controller.categories.length,
+                    itemBuilder: (context, index) {
+                      final active = controller.selectedCategory == index;
 
-                    return GestureDetector(
-                      onTap: () {
-                        controller.changeCategory(index);
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        padding: const EdgeInsets.symmetric(horizontal: 18),
-                        decoration: BoxDecoration(
-                          color: active ? AppColors.primary : Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: active
-                                ? AppColors.primary
-                                : Colors.grey.shade300,
+                      return GestureDetector(
+                        onTap: () {
+                          controller.changeCategory(index);
+                        },
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 250),
+                          margin: const EdgeInsets.only(right: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 18),
+                          decoration: BoxDecoration(
+                            color: active ? AppColors.primary : Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: active
+                                  ? AppColors.primary
+                                  : Colors.grey.shade300,
+                            ),
                           ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            controller.categories[index],
-                            style: TextStyle(
-                              color: active ? Colors.white : Colors.black,
-                              fontWeight: FontWeight.w600,
+                          child: Center(
+                            child: Text(
+                              controller.categories[index],
+                              style: TextStyle(
+                                color: active ? Colors.white : Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
 
             const SizedBox(height: 20),
 
+            /// GRID PRODUK
             Expanded(
               child: GridView.builder(
                 itemCount: 8,
@@ -110,9 +115,13 @@ class CategoryView extends GetView<CategoryController> {
                 ),
                 itemBuilder: (context, index) {
                   return productCard(
-                    "Red Velvet Cake",
-                    "Rp 85.000",
-                    "assets/images/cake.png",
+                    title: "Red Velvet Cake",
+                    price: "Rp 85.000",
+                    priceInt: 85000,
+                    image: "assets/images/cake.png",
+                    rating: "4.9",
+                    description:
+                        "Kue Red Velvet premium dengan tekstur lembut dan cream cheese berkualitas tinggi. Cocok untuk ulang tahun maupun acara spesial.",
                   );
                 },
               ),
@@ -125,64 +134,104 @@ class CategoryView extends GetView<CategoryController> {
     );
   }
 
-  Widget productCard(String title, String price, String image) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Expanded(child: Image.asset(image, fit: BoxFit.contain)),
-
-            const SizedBox(height: 10),
-
-            Text(
-              title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 5),
-
-            Text(
-              price,
-              style: const TextStyle(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 5),
-
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star, color: Colors.amber, size: 18),
-                SizedBox(width: 4),
-                Text("4.9"),
-              ],
-            ),
-
-            const SizedBox(height: 8),
-
-            SizedBox(
-              width: double.infinity,
-              height: 36,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+  Widget productCard({
+    required String title,
+    required String price,
+    required int priceInt,
+    required String image,
+    required String rating,
+    required String description,
+  }) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(18),
+      onTap: () {
+        Get.toNamed(
+          Routes.DETAIL_PRODUCT,
+          arguments: {
+            "name": title,
+            "price": price,
+            "priceInt": priceInt,
+            "image": image,
+            "rating": rating,
+            "description": description,
+          },
+        );
+      },
+      child: Card(
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              Expanded(
+                child: Hero(
+                  tag: title,
+                  child: Image.asset(image, fit: BoxFit.contain),
                 ),
-                onPressed: () {},
-                child: const Text("Beli"),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 10),
+
+              Text(
+                title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+
+              const SizedBox(height: 5),
+
+              Text(
+                price,
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.star, color: Colors.amber, size: 18),
+                  const SizedBox(width: 4),
+                  Text(rating),
+                ],
+              ),
+
+              const SizedBox(height: 8),
+
+              SizedBox(
+                width: double.infinity,
+                height: 36,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: () {
+                    Get.toNamed(
+                      Routes.DETAIL_PRODUCT,
+                      arguments: {
+                        "name": title,
+                        "price": price,
+                        "priceInt": priceInt,
+                        "image": image,
+                        "rating": rating,
+                        "description": description,
+                      },
+                    );
+                  },
+                  child: const Text("Beli"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
