@@ -39,7 +39,7 @@ dependencies:
   # Font
   google_fonts: ^8.1.0
    # HTTP Request (nanti untuk API)
-  http: ^1.5.0
+  http: ^1.6.0
 
   # Menyimpan token login
   shared_preferences: ^2.5.3

@@ -1,23 +1,18 @@
 import 'package:get/get.dart';
 
+import '../../../routes/app_pages.dart';
+
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  /// ==========================
+  /// DATA USER
+  /// ==========================
+  final RxString name = "Ranifa Fitriyana".obs;
+  final RxString email = "ranifa@gmail.com".obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  /// ==========================
+  /// LOGOUT
+  /// ==========================
+  void logout() {
+    Get.offAllNamed(Routes.LOGIN);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
