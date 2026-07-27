@@ -26,8 +26,6 @@ import '../modules/promo/bindings/promo_binding.dart';
 import '../modules/promo/views/promo_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
-import '../modules/setting/bindings/setting_binding.dart';
-import '../modules/setting/views/setting_view.dart';
 import '../modules/wishlist/bindings/wishlist_binding.dart';
 import '../modules/wishlist/views/wishlist_view.dart';
 
@@ -93,11 +91,6 @@ class AppPages {
       name: _Paths.ABOUT,
       page: () => const AboutView(),
       binding: AboutBinding(),
-    ),
-    GetPage(
-      name: _Paths.SETTING,
-      page: () => const SettingView(),
-      binding: SettingBinding(),
     ),
     GetPage(
       name: _Paths.PROFILE,

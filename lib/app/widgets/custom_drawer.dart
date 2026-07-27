@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../routes/app_pages.dart';
 import '../theme/app_colors.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  CustomDrawer({super.key});
+
+  final box = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -13,51 +16,52 @@ class CustomDrawer extends StatelessWidget {
       child: SafeArea(
         child: Column(
           children: [
-            /// Header
+            /// ==========================
+            /// HEADER USER
+            /// ==========================
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 30,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               color: AppColors.primary,
               child: Row(
                 children: [
                   const CircleAvatar(
                     radius: 28,
                     backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.grey,
-                      size: 35,
-                    ),
+                    child: Icon(Icons.person, color: Colors.grey, size: 35),
                   ),
+
                   const SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Ranifa Fitriyana",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          box.read("name") ?? "Guest",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 5),
-                      Text(
-                        "ranifa@gmail.com",
-                        style: TextStyle(
-                          color: Colors.white70,
+
+                        const SizedBox(height: 5),
+
+                        Text(
+                          box.read("email") ?? "-",
+                          style: const TextStyle(color: Colors.white70),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
 
-            /// Menu
+            /// ==========================
+            /// MENU
+            /// ==========================
             Expanded(
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -71,13 +75,13 @@ class CustomDrawer extends StatelessWidget {
                   _drawerItem(
                     Icons.grid_view_outlined,
                     "Kategori",
-                    () => Get.toNamed(Routes.CATEGORY),
+                    () => Get.offAllNamed(Routes.CATEGORY),
                   ),
 
                   _drawerItem(
                     Icons.shopping_cart_outlined,
                     "Keranjang",
-                    () => Get.toNamed(Routes.CART),
+                    () => Get.offAllNamed(Routes.CART),
                   ),
 
                   _drawerItem(
@@ -110,21 +114,25 @@ class CustomDrawer extends StatelessWidget {
                     () => Get.toNamed(Routes.ABOUT),
                   ),
 
-                  _drawerItem(
-                    Icons.settings_outlined,
-                    "Pengaturan",
-                    () => Get.toNamed(Routes.SETTING),
-                  ),
-
                   const Divider(),
 
-                  _drawerItem(
-                    Icons.logout,
-                    "Keluar",
-                    () {
-                      Get.offAllNamed(Routes.LOGIN);
-                    },
-                  ),
+                  _drawerItem(Icons.logout, "Keluar", () {
+                    Get.defaultDialog(
+                      title: "Konfirmasi Logout",
+                      middleText:
+                          "Apakah Anda yakin ingin keluar dari akun ini?",
+                      radius: 15,
+                      textCancel: "Batal",
+                      textConfirm: "Keluar",
+                      confirmTextColor: Colors.white,
+                      buttonColor: AppColors.primary,
+                      onConfirm: () {
+                        box.erase();
+
+                        Get.offAllNamed(Routes.LOGIN);
+                      },
+                    );
+                  }),
                 ],
               ),
             ),
@@ -134,19 +142,12 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _drawerItem(
-    IconData icon,
-    String title,
-    VoidCallback onTap,
-  ) {
+  Widget _drawerItem(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon),
       title: Text(
         title,
-        style: const TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
       ),
       onTap: onTap,
     );

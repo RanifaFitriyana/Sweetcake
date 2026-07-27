@@ -15,7 +15,7 @@ class HomeView extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
 
       appBar: AppBar(
         backgroundColor: Colors.white,

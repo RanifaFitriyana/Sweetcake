@@ -15,7 +15,7 @@ class CategoryView extends GetView<CategoryController> {
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      drawer: const CustomDrawer(),
+      drawer: CustomDrawer(),
 
       appBar: AppBar(
         backgroundColor: Colors.white,

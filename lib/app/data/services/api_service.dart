@@ -13,9 +13,7 @@ class ApiService {
   }) async {
     return await http.post(
       Uri.parse("$baseUrl/auth/register"),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "name": name,
         "email": email,
