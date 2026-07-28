@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/product_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/custom_bottom_navbar.dart';
@@ -29,202 +30,141 @@ class HomeView extends GetView<HomeController> {
             fontSize: 28,
           ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-        ],
       ),
 
       bottomNavigationBar: const CustomBottomNavbar(currentIndex: 0),
 
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-
-          /// SEARCH
-          TextField(
-            decoration: InputDecoration(
-              hintText: "Cari kue favoritmu...",
-              prefixIcon: const Icon(Icons.search),
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide.none,
+      body: RefreshIndicator(
+        onRefresh: controller.refreshProducts,
+        child: ListView(
+          padding: const EdgeInsets.all(20),
+          children: [
+            /// BANNER
+            Container(
+              height: 170,
+              decoration: BoxDecoration(
+                color: const Color(0xffFFE7EB),
+                borderRadius: BorderRadius.circular(20),
               ),
-            ),
-          ),
-
-          const SizedBox(height: 20),
-
-          /// BANNER
-          Container(
-            height: 170,
-            decoration: BoxDecoration(
-              color: const Color(0xffFFE7EB),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Kue Lezat\nUntuk Momen\nSpesial Anda",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        const SizedBox(height: 15),
-
-                        SizedBox(
-                          width: 130,
-                          height: 36,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+              child: Padding(
+                padding: const EdgeInsets.all(15),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Kue Lezat\nUntuk Momen\nSpesial Anda",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
-                            onPressed: () {},
-                            child: const Text(
-                              "Belanja",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
+                          ),
+
+                          const SizedBox(height: 15),
+
+                          SizedBox(
+                            width: 130,
+                            height: 36,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: () {
+                                Get.toNamed(Routes.CATEGORY);
+                              },
+                              child: const Text(
+                                "Belanja",
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  Expanded(
-                    child: Image.asset(
-                      "assets/images/cake.png",
-                      fit: BoxFit.contain,
+                    Expanded(
+                      child: Image.asset(
+                        "assets/images/cake.png",
+                        fit: BoxFit.contain,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 25),
-
-          /// KATEGORI
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Kategori",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  ],
                 ),
               ),
+            ),
 
-              TextButton(
-                onPressed: () {
-                  Get.toNamed(Routes.CATEGORY);
-                },
-                child: const Text("Lihat Semua"),
-              ),
-            ],
-          ),
+            const SizedBox(height: 15),
 
-          const SizedBox(height: 15),
-
-          SizedBox(
-            height: 90,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
+            /// PRODUK
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                category("🍰", "Semua"),
-                category("🎂", "Ulang Tahun"),
-                category("🧁", "Cupcake"),
-                category("🥐", "Roti"),
-                category("🍪", "Cookies"),
+                const Text(
+                  "Produk Terlaris",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.toNamed(Routes.CATEGORY);
+                  },
+                  child: const Text("Lihat Semua"),
+                ),
               ],
             ),
-          ),
 
-          const SizedBox(height: 25),
+            const SizedBox(height: 15),
 
-          /// PRODUK TERLARIS
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Produk Terlaris",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+
+              if (controller.products.isEmpty) {
+                return const Padding(
+                  padding: EdgeInsets.all(40),
+                  child: Center(child: Text("Belum ada produk")),
+                );
+              }
+
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: controller.bestProducts.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 15,
+                  mainAxisSpacing: 15,
+                  childAspectRatio: .72,
                 ),
-              ),
+                itemBuilder: (context, index) {
+                  final ProductModel product = controller.bestProducts[index];
 
-              TextButton(
-                onPressed: () {
-                  Get.toNamed(Routes.CATEGORY);
-                },
-                child: const Text("Lihat Semua"),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 15),
-
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: 4,
-            gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 15,
-              mainAxisSpacing: 15,
-              childAspectRatio: .72,
-            ),
-            itemBuilder: (context, index) {
-
-              return InkWell(
-                borderRadius: BorderRadius.circular(18),
-                onTap: () {
-                  Get.toNamed(
-                    Routes.DETAIL_PRODUCT,
-                    arguments: {
-                      "name": "Red Velvet Cake",
-                      "price": "Rp 85.000",
-                      "priceInt": 85000,
-                      "rating": "4.9",
-                      "image": "assets/images/cake.png",
-                      "description":
-                          "Kue red velvet premium dengan tekstur lembut dan cream cheese berkualitas tinggi. Cocok untuk ulang tahun maupun acara spesial.",
+                  return InkWell(
+                    borderRadius: BorderRadius.circular(18),
+                    onTap: () {
+                      Get.toNamed(Routes.DETAIL_PRODUCT, arguments: product);
                     },
+                    child: productCard(product),
                   );
                 },
-                child: productCard(
-                  "Red Velvet Cake",
-                  "Rp 85.000",
-                  "assets/images/cake.png",
-                ),
               );
-            },
-          ),
-        ],
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -237,43 +177,47 @@ class HomeView extends GetView<HomeController> {
           CircleAvatar(
             radius: 28,
             backgroundColor: Colors.pink.shade100,
-            child: Text(
-              emoji,
-              style: const TextStyle(fontSize: 24),
-            ),
+            child: Text(emoji, style: const TextStyle(fontSize: 24)),
           ),
-
           const SizedBox(height: 8),
-
           Text(title),
         ],
       ),
     );
   }
 
-  Widget productCard(
-      String title,
-      String price,
-      String image,
-      ) {
+  Widget productCard(ProductModel product) {
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Expanded(
-              child: Center(
-                child: Hero(
-                  tag: title,
-                  child: Image.asset(
-                    image,
-                    fit: BoxFit.contain,
+              child: Hero(
+                tag: product.id,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    product.image,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) {
+                      return const Center(
+                        child: Icon(
+                          Icons.image_not_supported,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+
+                      return const Center(child: CircularProgressIndicator());
+                    },
                   ),
                 ),
               ),
@@ -282,19 +226,16 @@ class HomeView extends GetView<HomeController> {
             const SizedBox(height: 10),
 
             Text(
-              title,
-              maxLines: 1,
+              product.name,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
             ),
 
             const SizedBox(height: 5),
 
             Text(
-              price,
+              "Rp ${product.price.toString()}",
               style: const TextStyle(
                 color: AppColors.primary,
                 fontWeight: FontWeight.bold,
@@ -304,15 +245,11 @@ class HomeView extends GetView<HomeController> {
 
             const SizedBox(height: 5),
 
-            const Row(
+            Row(
               children: [
-                Icon(
-                  Icons.star,
-                  size: 16,
-                  color: Colors.amber,
-                ),
-                SizedBox(width: 4),
-                Text("4.9"),
+                const Icon(Icons.star, color: Colors.amber, size: 16),
+                const SizedBox(width: 4),
+                Text(product.rating.toString()),
               ],
             ),
           ],

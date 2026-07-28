@@ -4,13 +4,14 @@ import 'package:get/get.dart';
 import '../../../theme/app_colors.dart';
 import '../controllers/detail_product_controller.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../../data/models/product_model.dart';
 
 class DetailProductView extends GetView<DetailProductController> {
   const DetailProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final product = Get.arguments;
+    final ProductModel product = Get.arguments as ProductModel;
     final CartController cartController = Get.find<CartController>();
 
     return Scaffold(
@@ -33,13 +34,13 @@ class DetailProductView extends GetView<DetailProductController> {
 
               onPressed: () {
                 cartController.addToCart({
-                  "name": product["name"],
-                  "image": product["image"],
-                  "price": product["priceInt"],
-                  "priceText": product["price"],
-                  "rating": product["rating"],
-                  "description": product["description"],
-                  "size": controller.selectedSize.value,
+                  "id": product.id,
+                  "name": product.name,
+                  "image": product.image,
+                  "price": product.price,
+                  "rating": product.rating,
+                  "description": product.description,
+                  "category": product.category,
                   "qty": controller.quantity.value,
                 });
 
@@ -121,11 +122,16 @@ class DetailProductView extends GetView<DetailProductController> {
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
-                  child: Image.asset(
-                    product["image"],
-                    width: double.infinity,
-                    height: 300,
-                    fit: BoxFit.cover,
+                  child: Hero(
+                    tag: product.id,
+                    child: Image.network(
+                      product.image,
+                      width: double.infinity,
+                      height: 300,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) =>
+                          const Icon(Icons.image_not_supported),
+                    ),
                   ),
                 ),
 
@@ -161,7 +167,7 @@ class DetailProductView extends GetView<DetailProductController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product["name"],
+                    product.name,
                     style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -173,7 +179,7 @@ class DetailProductView extends GetView<DetailProductController> {
                   Row(
                     children: [
                       Text(
-                        product["price"],
+                        cartController.formatPrice(product.price),
                         style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
@@ -188,7 +194,7 @@ class DetailProductView extends GetView<DetailProductController> {
                       const SizedBox(width: 5),
 
                       Text(
-                        product["rating"],
+                        product.rating.toString(),
                         style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ],
@@ -203,44 +209,12 @@ class DetailProductView extends GetView<DetailProductController> {
 
                   const SizedBox(height: 10),
 
-                  const Text(
-                    "Kue premium dengan tekstur yang lembut dan rasa yang lezat. "
-                    "Dibuat menggunakan bahan-bahan berkualitas tinggi sehingga cocok "
-                    "untuk ulang tahun, perayaan keluarga, maupun acara spesial lainnya.",
-                    style: TextStyle(
+                  Text(
+                    product.description,
+                    style: const TextStyle(
                       fontSize: 15,
                       color: Colors.black54,
                       height: 1.6,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
-                    "Pilih Ukuran",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  Obx(
-                    () => Wrap(
-                      spacing: 12,
-                      children: controller.sizes.map((size) {
-                        final active = controller.selectedSize.value == size;
-
-                        return ChoiceChip(
-                          label: Text(size),
-                          selected: active,
-                          selectedColor: AppColors.primary,
-                          labelStyle: TextStyle(
-                            color: active ? Colors.white : Colors.black,
-                          ),
-                          onSelected: (_) {
-                            controller.selectSize(size);
-                          },
-                        );
-                      }).toList(),
                     ),
                   ),
 

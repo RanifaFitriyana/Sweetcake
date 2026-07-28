@@ -187,14 +187,7 @@ class CartView extends GetView<CartController> {
       onTap: () {
         Get.toNamed(
           Routes.DETAIL_PRODUCT,
-          arguments: {
-            "name": item["name"],
-            "image": item["image"],
-            "price": item["priceText"],
-            "priceInt": item["price"],
-            "rating": item["rating"],
-            "description": item["description"],
-          },
+          arguments: item,
         );
       },
       child: Card(
@@ -210,11 +203,31 @@ class CartView extends GetView<CartController> {
               /// ===========================
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
+                child: Image.network(
                   item["image"],
                   width: 90,
                   height: 90,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, progress) {
+                    if (progress == null) return child;
+
+                    return const SizedBox(
+                      width: 90,
+                      height: 90,
+                      child: Center(child: CircularProgressIndicator()),
+                    );
+                  },
+                  errorBuilder: (_, __, ___) {
+                    return Container(
+                      width: 90,
+                      height: 90,
+                      color: Colors.grey.shade200,
+                      child: const Icon(
+                        Icons.image_not_supported,
+                        color: Colors.grey,
+                      ),
+                    );
+                  },
                 ),
               ),
 
@@ -236,14 +249,7 @@ class CartView extends GetView<CartController> {
                         fontSize: 16,
                       ),
                     ),
-
-                    const SizedBox(height: 5),
-
-                    Text(
-                      item["size"],
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-
+        
                     const SizedBox(height: 8),
 
                     Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/product_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/custom_bottom_navbar.dart';
@@ -28,13 +29,9 @@ class CategoryView extends GetView<CategoryController> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-        ],
       ),
+
+      bottomNavigationBar: const CustomBottomNavbar(currentIndex: 1),
 
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -42,9 +39,19 @@ class CategoryView extends GetView<CategoryController> {
           children: [
             /// SEARCH
             TextField(
+              controller: controller.searchController,
               decoration: InputDecoration(
                 hintText: "Cari produk...",
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: controller.searchController.text.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          controller.searchController.clear();
+                          controller.filterProducts();
+                        },
+                      )
+                    : null,
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
@@ -57,11 +64,11 @@ class CategoryView extends GetView<CategoryController> {
             const SizedBox(height: 20),
 
             /// TAB KATEGORI
-            SizedBox(
-              height: 45,
-              child: GetBuilder<CategoryController>(
-                builder: (controller) {
-                  return ListView.builder(
+            GetBuilder<CategoryController>(
+              builder: (controller) {
+                return SizedBox(
+                  height: 45,
+                  child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: controller.categories.length,
                     itemBuilder: (context, index) {
@@ -96,66 +103,51 @@ class CategoryView extends GetView<CategoryController> {
                         ),
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 20),
 
             /// GRID PRODUK
             Expanded(
-              child: GridView.builder(
-                itemCount: 8,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15,
-                  mainAxisSpacing: 15,
-                  childAspectRatio: .68,
-                ),
-                itemBuilder: (context, index) {
-                  return productCard(
-                    title: "Red Velvet Cake",
-                    price: "Rp 85.000",
-                    priceInt: 85000,
-                    image: "assets/images/cake.png",
-                    rating: "4.9",
-                    description:
-                        "Kue Red Velvet premium dengan tekstur lembut dan cream cheese berkualitas tinggi. Cocok untuk ulang tahun maupun acara spesial.",
-                  );
-                },
-              ),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (controller.products.isEmpty) {
+                  return const Center(child: Text("Produk tidak ditemukan"));
+                }
+
+                return GridView.builder(
+                  itemCount: controller.products.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: .68,
+                  ),
+                  itemBuilder: (context, index) {
+                    final product = controller.products[index];
+
+                    return productCard(product);
+                  },
+                );
+              }),
             ),
           ],
         ),
       ),
-
-      bottomNavigationBar: const CustomBottomNavbar(currentIndex: 1),
     );
   }
 
-  Widget productCard({
-    required String title,
-    required String price,
-    required int priceInt,
-    required String image,
-    required String rating,
-    required String description,
-  }) {
+  Widget productCard(ProductModel product) {
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: () {
-        Get.toNamed(
-          Routes.DETAIL_PRODUCT,
-          arguments: {
-            "name": title,
-            "price": price,
-            "priceInt": priceInt,
-            "image": image,
-            "rating": rating,
-            "description": description,
-          },
-        );
+        Get.toNamed(Routes.DETAIL_PRODUCT, arguments: product);
       },
       child: Card(
         elevation: 2,
@@ -163,46 +155,80 @@ class CategoryView extends GetView<CategoryController> {
         child: Padding(
           padding: const EdgeInsets.all(10),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              /// Gambar Produk
               Expanded(
                 child: Hero(
-                  tag: title,
-                  child: Image.asset(image, fit: BoxFit.contain),
+                  tag: product.id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      product.image,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+
+                        return const Center(child: CircularProgressIndicator());
+                      },
+
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Center(
+                          child: Icon(
+                            Icons.image_not_supported,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
 
               const SizedBox(height: 10),
 
+              /// Nama Produk
               Text(
-                title,
-                maxLines: 1,
+                product.name,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-
-              const SizedBox(height: 5),
-
-              Text(
-                price,
                 style: const TextStyle(
-                  color: AppColors.primary,
                   fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
               ),
 
               const SizedBox(height: 5),
 
+              /// Harga
+              Text(
+                "Rp ${product.price}",
+                style: const TextStyle(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
+              ),
+
+              const SizedBox(height: 5),
+
+              /// Rating
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(Icons.star, color: Colors.amber, size: 18),
                   const SizedBox(width: 4),
-                  Text(rating),
+                  Text(product.rating.toString()),
                 ],
               ),
 
               const SizedBox(height: 8),
 
+              /// Tombol Beli
               SizedBox(
                 width: double.infinity,
                 height: 36,
@@ -215,17 +241,7 @@ class CategoryView extends GetView<CategoryController> {
                     ),
                   ),
                   onPressed: () {
-                    Get.toNamed(
-                      Routes.DETAIL_PRODUCT,
-                      arguments: {
-                        "name": title,
-                        "price": price,
-                        "priceInt": priceInt,
-                        "image": image,
-                        "rating": rating,
-                        "description": description,
-                      },
-                    );
+                    Get.toNamed(Routes.DETAIL_PRODUCT, arguments: product);
                   },
                   child: const Text("Beli"),
                 ),

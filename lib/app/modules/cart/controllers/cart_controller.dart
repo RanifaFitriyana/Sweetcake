@@ -14,10 +14,7 @@ class CartController extends GetxController {
   /// TAMBAH KE KERANJANG
   /// ==========================
   void addToCart(Map<String, dynamic> product) {
-    int index = cartItems.indexWhere(
-      (item) =>
-          item["name"] == product["name"] && item["size"] == product["size"],
-    );
+    int index = cartItems.indexWhere((item) => item["id"] == product["id"]);
 
     if (index != -1) {
       cartItems[index]["qty"] += product["qty"];
