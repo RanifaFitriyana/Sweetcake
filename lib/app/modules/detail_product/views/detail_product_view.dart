@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../theme/app_colors.dart';
 import '../controllers/detail_product_controller.dart';
 import '../../cart/controllers/cart_controller.dart';
+import '../../wishlist/controllers/wishlist_controller.dart';
 import '../../../data/models/product_model.dart';
 
 class DetailProductView extends GetView<DetailProductController> {
@@ -12,6 +13,8 @@ class DetailProductView extends GetView<DetailProductController> {
   @override
   Widget build(BuildContext context) {
     final ProductModel product = Get.arguments as ProductModel;
+    final WishlistController wishlistController =
+        Get.find<WishlistController>();
     final CartController cartController = Get.find<CartController>();
 
     return Scaffold(
@@ -152,10 +155,21 @@ class DetailProductView extends GetView<DetailProductController> {
                   right: 15,
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
-                    child: IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {},
-                    ),
+                    child: Obx(() {
+                      final isFavorite = wishlistController.isFavorite(
+                        product.id,
+                      );
+
+                      return IconButton(
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? Colors.red : Colors.black,
+                        ),
+                        onPressed: () {
+                          wishlistController.toggleWishlist(product);
+                        },
+                      );
+                    }),
                   ),
                 ),
               ],

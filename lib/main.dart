@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'app/modules/cart/controllers/cart_controller.dart';
+import 'app/modules/wishlist/controllers/wishlist_controller.dart';
 import 'app/routes/app_pages.dart';
 import 'app/theme/app_theme.dart';
 
@@ -12,6 +13,8 @@ void main() async {
   await GetStorage.init();
 
   Get.put<CartController>(CartController(), permanent: true);
+
+  Get.put<WishlistController>(WishlistController(), permanent: true);
 
   runApp(
     GetMaterialApp(

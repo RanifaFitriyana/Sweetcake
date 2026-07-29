@@ -28,6 +28,10 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/wishlist/bindings/wishlist_binding.dart';
 import '../modules/wishlist/views/wishlist_view.dart';
+import '../modules/checkout/bindings/upload_payment_binding.dart';
+import '../modules/checkout/bindings/success_binding.dart';
+import '../modules/checkout/views/upload_payment_view.dart';
+import '../modules/checkout/views/success_view.dart';
 
 part 'app_routes.dart';
 
@@ -106,6 +110,16 @@ class AppPages {
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
+    ),
+    GetPage(
+      name: Routes.UPLOAD_PAYMENT,
+      page: () => const UploadPaymentView(),
+      binding: UploadPaymentBinding(),
+    ),
+    GetPage(
+      name: Routes.SUCCESS,
+      page: () => const SuccessView(),
+      binding: SuccessBinding(),
     ),
   ];
 }

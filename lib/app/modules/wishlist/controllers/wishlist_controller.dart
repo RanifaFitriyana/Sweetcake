@@ -1,23 +1,25 @@
 import 'package:get/get.dart';
 
+import '../../../data/models/product_model.dart';
+
 class WishlistController extends GetxController {
-  //TODO: Implement WishlistController
+  final RxList<ProductModel> wishlist = <ProductModel>[].obs;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  bool isFavorite(String id) {
+    return wishlist.any((item) => item.id == id);
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  void toggleWishlist(ProductModel product) {
+    final index = wishlist.indexWhere((item) => item.id == product.id);
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+    if (index != -1) {
+      wishlist.removeAt(index);
 
-  void increment() => count.value++;
+      Get.snackbar("Wishlist", "${product.name} dihapus dari wishlist");
+    } else {
+      wishlist.add(product);
+
+      Get.snackbar("Wishlist", "${product.name} ditambahkan ke wishlist");
+    }
+  }
 }

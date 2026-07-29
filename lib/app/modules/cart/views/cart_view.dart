@@ -158,11 +158,7 @@ class CartView extends GetView<CartController> {
                         ),
                       ),
                       onPressed: () {
-                        Get.snackbar(
-                          "Checkout",
-                          "Fitur checkout akan dibuat selanjutnya.",
-                          snackPosition: SnackPosition.TOP,
-                        );
+                        Get.toNamed(Routes.CHECKOUT);
                       },
                       child: const Text(
                         "Checkout",
@@ -185,10 +181,7 @@ class CartView extends GetView<CartController> {
   Widget cartItem(Map<String, dynamic> item, int index) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(
-          Routes.DETAIL_PRODUCT,
-          arguments: item,
-        );
+        Get.toNamed(Routes.DETAIL_PRODUCT, arguments: item);
       },
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
@@ -249,7 +242,7 @@ class CartView extends GetView<CartController> {
                         fontSize: 16,
                       ),
                     ),
-        
+
                     const SizedBox(height: 8),
 
                     Text(
