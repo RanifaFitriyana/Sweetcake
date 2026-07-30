@@ -19,39 +19,47 @@ class LoginView extends GetView<LoginController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 40),
+              const SizedBox(height: 35),
 
               /// Logo
-              Center(child: Image.asset("assets/images/logo.png", width: 110)),
+              Center(child: Image.asset("assets/images/logo.png", width: 95)),
 
-              const SizedBox(height: 35),
+              const SizedBox(height: 30),
 
               /// Judul
               Row(
                 children: [
-                  Text("Selamat Datang!", style: AppTextStyles.title),
-                  const SizedBox(width: 8),
-                  const Text("👋", style: TextStyle(fontSize: 28)),
+                  Text(
+                    "Selamat Datang!",
+                    style: AppTextStyles.title.copyWith(fontSize: 22),
+                  ),
+                  const SizedBox(width: 6),
+                  const Text("👋", style: TextStyle(fontSize: 24)),
                 ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
-              Text("Masuk untuk melanjutkan", style: AppTextStyles.body),
+              Text(
+                "Masuk untuk melanjutkan",
+                style: AppTextStyles.body.copyWith(fontSize: 13),
+              ),
 
-              const SizedBox(height: 35),
+              const SizedBox(height: 30),
 
               /// Email
               TextField(
                 controller: controller.emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
+                style: const TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   hintText: "Email",
-                  prefixIcon: const Icon(Icons.email_outlined),
+                  hintStyle: const TextStyle(fontSize: 13),
+                  prefixIcon: const Icon(Icons.email_outlined, size: 20),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 16),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
@@ -59,7 +67,7 @@ class LoginView extends GetView<LoginController> {
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
               /// Password
               Obx(
@@ -67,20 +75,23 @@ class LoginView extends GetView<LoginController> {
                   controller: controller.passwordController,
                   obscureText: controller.isHidden.value,
                   textInputAction: TextInputAction.done,
+                  style: const TextStyle(fontSize: 14),
                   decoration: InputDecoration(
                     hintText: "Password",
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    hintStyle: const TextStyle(fontSize: 13),
+                    prefixIcon: const Icon(Icons.lock_outline, size: 20),
                     suffixIcon: IconButton(
                       onPressed: controller.showPassword,
                       icon: Icon(
                         controller.isHidden.value
                             ? Icons.visibility_off
                             : Icons.visibility,
+                        size: 20,
                       ),
                     ),
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 18),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
@@ -97,6 +108,7 @@ class LoginView extends GetView<LoginController> {
                   child: Text(
                     "Lupa Password?",
                     style: TextStyle(
+                      fontSize: 13,
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600,
                     ),
@@ -110,17 +122,24 @@ class LoginView extends GetView<LoginController> {
               Obx(
                 () => SizedBox(
                   width: double.infinity,
-                  height: 55,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: controller.isLoading.value
                         ? null
                         : controller.login,
                     child: controller.isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
                         : const Text(
                             "Masuk",
                             style: TextStyle(
-                              fontSize: 17,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -130,81 +149,22 @@ class LoginView extends GetView<LoginController> {
 
               const SizedBox(height: 30),
 
-              /// Divider
-              Row(
-                children: [
-                  const Expanded(child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "atau masuk dengan",
-                      style: AppTextStyles.small,
-                    ),
-                  ),
-                  const Expanded(child: Divider()),
-                ],
-              ),
-
-              const SizedBox(height: 25),
-
-              /// Google & Facebook
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      icon: Image.asset(
-                        "assets/images/google.png",
-                        width: 22,
-                        height: 22,
-                      ),
-                      label: const Text("Google"),
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      icon: Image.asset(
-                        "assets/images/facebook.png",
-                        width: 22,
-                        height: 22,
-                      ),
-                      label: const Text("Facebook"),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 35),
-
               /// Register
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
                     "Belum punya akun?",
-                    style: TextStyle(color: Colors.black54),
+                    style: TextStyle(color: Colors.black54, fontSize: 13),
                   ),
                   TextButton(
                     onPressed: () {
                       Get.toNamed(Routes.REGISTER);
                     },
-                    child: Text(
+                    child: const Text(
                       "Daftar di sini",
                       style: TextStyle(
+                        fontSize: 13,
                         color: AppColors.primary,
                         fontWeight: FontWeight.bold,
                       ),
@@ -213,7 +173,7 @@ class LoginView extends GetView<LoginController> {
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
             ],
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../data/models/address_model.dart';
 import '../../../theme/app_colors.dart';
 import '../controllers/checkout_controller.dart';
 
@@ -13,32 +14,40 @@ class CheckoutView extends GetView<CheckoutController> {
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
-        title: const Text("Checkout"),
+        title: const Text(
+          "Checkout",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        elevation: 0,
       ),
 
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
+
           child: SizedBox(
             height: 55,
+
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
+
                 foregroundColor: Colors.white,
+
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
+
               onPressed: controller.showPaymentDialog,
+
               child: const Text(
-                "Lanjut Pembayaran",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
+                "Konfirmasi Pesanan",
+
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -47,26 +56,27 @@ class CheckoutView extends GetView<CheckoutController> {
 
       body: ListView(
         padding: const EdgeInsets.all(20),
-        children: [
 
-          /// ==========================
+        children: [
           /// DATA DIRI
-          /// ==========================
           const Text(
             "Data Diri",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 15),
 
           TextField(
             controller: controller.nameController,
+
             decoration: InputDecoration(
               labelText: "Nama Lengkap",
+
+              labelStyle: const TextStyle(fontSize: 14),
+
               prefixIcon: const Icon(Icons.person),
+
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -77,74 +87,147 @@ class CheckoutView extends GetView<CheckoutController> {
 
           TextField(
             controller: controller.phoneController,
+
             keyboardType: TextInputType.phone,
+
             decoration: InputDecoration(
               labelText: "Nomor HP",
+
+              labelStyle: const TextStyle(fontSize: 14),
+
               prefixIcon: const Icon(Icons.phone),
+
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
             ),
           ),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 25),
 
-          /// ==========================
           /// ALAMAT
-          /// ==========================
           const Text(
             "Alamat Pengiriman",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 15),
 
-          Obx(
-            () => Container(
+          Obx(() {
+            return Container(
               padding: const EdgeInsets.all(15),
+
               decoration: BoxDecoration(
                 color: Colors.white,
+
                 borderRadius: BorderRadius.circular(15),
               ),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
 
-                  Text(
-                    controller.address.value.isEmpty
-                        ? "Belum mengambil lokasi"
-                        : controller.address.value,
+                children: [
+                  const Text(
+                    "Pilih Alamat",
+
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  DropdownButtonFormField<AddressModel>(
+                    isExpanded: true,
+
+                    value: controller.selectedAddress.value,
+
+                    hint: const Text(
+                      "Pilih alamat",
+                      style: TextStyle(fontSize: 14),
+                    ),
+
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+
+                    items: controller.addressController.addresses.map((item) {
+                      return DropdownMenuItem<AddressModel>(
+                        value: item,
+
+                        child: Text(
+                          item.label,
+
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      );
+                    }).toList(),
+
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.selectAddress(value);
+                      }
+                    },
                   ),
 
                   const SizedBox(height: 15),
 
                   SizedBox(
                     width: double.infinity,
+
                     child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+
+                        foregroundColor: Colors.white,
+                      ),
+
                       onPressed: controller.getLocation,
-                      icon: const Icon(Icons.location_on),
-                      label: const Text("Ambil Lokasi GPS"),
+
+                      icon: const Icon(Icons.location_on, size: 18),
+
+                      label: const Text(
+                        "Gunakan Lokasi GPS",
+
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 15),
+
+                  Container(
+                    width: double.infinity,
+
+                    padding: const EdgeInsets.all(15),
+
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+
+                    child: Text(
+                      controller.address.value.isEmpty
+                          ? "Belum memilih alamat"
+                          : controller.address.value,
+
+                      style: const TextStyle(fontSize: 13),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
+            );
+          }),
 
-          const SizedBox(height: 30),
+          const SizedBox(height: 25),
 
-          /// ==========================
           /// DETAIL PESANAN
-          /// ==========================
           const Text(
             "Detail Pesanan",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 15),
@@ -152,21 +235,44 @@ class CheckoutView extends GetView<CheckoutController> {
           Card(
             child: Padding(
               padding: const EdgeInsets.all(15),
-              child: Obx(() {
-                return Column(
+
+              child: Obx(
+                () => Column(
                   children: controller.cartController.cartItems.map((item) {
                     return ListTile(
                       contentPadding: EdgeInsets.zero,
-                      title: Text(item["name"]),
-                      subtitle: Text("x${item["qty"]}"),
+
+                      title: Text(
+                        item["name"],
+
+                        style: const TextStyle(
+                          fontSize: 14,
+
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+
+                      subtitle: Text(
+                        "x${item["qty"]}",
+
+                        style: const TextStyle(fontSize: 13),
+                      ),
+
                       trailing: Text(
-                        controller.cartController
-                            .formatPrice(item["price"] * item["qty"]),
+                        controller.cartController.formatPrice(
+                          item["price"] * item["qty"],
+                        ),
+
+                        style: const TextStyle(
+                          fontSize: 13,
+
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     );
                   }).toList(),
-                );
-              }),
+                ),
+              ),
             ),
           ),
 
@@ -177,43 +283,153 @@ class CheckoutView extends GetView<CheckoutController> {
           /// ==========================
           const Text(
             "Metode Pembayaran",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
 
-          Obx(
-            () => Column(
+          Obx(() {
+            return Column(
               children: [
-
-                RadioListTile(
+                RadioListTile<String>(
+                  dense: true,
                   value: "Transfer Bank",
                   groupValue: controller.paymentMethod.value,
                   onChanged: controller.changePayment,
-                  title: const Text("Transfer Bank"),
+                  title: const Text(
+                    "Transfer Bank",
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
 
-                RadioListTile(
+                RadioListTile<String>(
+                  dense: true,
                   value: "QRIS",
                   groupValue: controller.paymentMethod.value,
                   onChanged: controller.changePayment,
-                  title: const Text("QRIS"),
+                  title: const Text("QRIS", style: TextStyle(fontSize: 14)),
                 ),
 
-                RadioListTile(
+                RadioListTile<String>(
+                  dense: true,
                   value: "COD",
                   groupValue: controller.paymentMethod.value,
                   onChanged: controller.changePayment,
-                  title: const Text("Cash On Delivery"),
+                  title: const Text(
+                    "Cash On Delivery",
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
-              ],
-            ),
-          ),
 
-          const SizedBox(height: 100),
+                const SizedBox(height: 20),
+
+                /// ==========================
+                /// INFO PEMBAYARAN
+                /// ==========================
+                if (controller.paymentMethod.value == "Transfer Bank")
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Transfer Bank",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        SizedBox(height: 12),
+
+                        Text("Bank BCA"),
+                        SizedBox(height: 5),
+
+                        Text(
+                          "1234567890",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+
+                        SizedBox(height: 5),
+
+                        Text("a.n SweetCake"),
+                      ],
+                    ),
+                  ),
+
+                if (controller.paymentMethod.value == "QRIS")
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Scan QRIS Berikut",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+
+                        const SizedBox(height: 15),
+
+                        Image.asset(
+                          "assets/images/qris.png",
+                          width: 220,
+                          height: 220,
+                          fit: BoxFit.contain,
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        const Text(
+                          "Silakan scan menggunakan Mobile Banking atau E-Wallet.",
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (controller.paymentMethod.value == "COD")
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration(
+                      color: Colors.orange.shade50,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.info_outline, color: Colors.orange),
+
+                        SizedBox(width: 10),
+
+                        Expanded(
+                          child: Text(
+                            "Pembayaran dilakukan ketika pesanan diterima oleh pelanggan.",
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            );
+          }),
+
+          const SizedBox(height: 80),
         ],
       ),
     );

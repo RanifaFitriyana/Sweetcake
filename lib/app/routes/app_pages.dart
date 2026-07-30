@@ -9,9 +9,15 @@ import '../modules/cart/views/cart_view.dart';
 import '../modules/category/bindings/category_binding.dart';
 import '../modules/category/views/category_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
+import '../modules/checkout/bindings/success_binding.dart';
+import '../modules/checkout/bindings/upload_payment_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
+import '../modules/checkout/views/success_view.dart';
+import '../modules/checkout/views/upload_payment_view.dart';
 import '../modules/detail_product/bindings/detail_product_binding.dart';
 import '../modules/detail_product/views/detail_product_view.dart';
+import '../modules/edit_profile/bindings/edit_profile_binding.dart';
+import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
@@ -22,16 +28,10 @@ import '../modules/order/bindings/order_binding.dart';
 import '../modules/order/views/order_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
-import '../modules/promo/bindings/promo_binding.dart';
-import '../modules/promo/views/promo_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/wishlist/bindings/wishlist_binding.dart';
 import '../modules/wishlist/views/wishlist_view.dart';
-import '../modules/checkout/bindings/upload_payment_binding.dart';
-import '../modules/checkout/bindings/success_binding.dart';
-import '../modules/checkout/views/upload_payment_view.dart';
-import '../modules/checkout/views/success_view.dart';
 
 part 'app_routes.dart';
 
@@ -87,11 +87,6 @@ class AppPages {
       binding: AddressBinding(),
     ),
     GetPage(
-      name: _Paths.PROMO,
-      page: () => const PromoView(),
-      binding: PromoBinding(),
-    ),
-    GetPage(
       name: _Paths.ABOUT,
       page: () => const AboutView(),
       binding: AboutBinding(),
@@ -120,6 +115,11 @@ class AppPages {
       name: Routes.SUCCESS,
       page: () => const SuccessView(),
       binding: SuccessBinding(),
+    ),
+    GetPage(
+      name: _Paths.EDIT_PROFILE,
+      page: () => const EditProfileView(),
+      binding: EditProfileBinding(),
     ),
   ];
 }

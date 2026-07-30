@@ -23,6 +23,7 @@ class ProfileView extends GetView<ProfileController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
+            fontSize: 17,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -33,15 +34,18 @@ class ProfileView extends GetView<ProfileController> {
       body: Obx(
         () => ListView(
           padding: const EdgeInsets.all(20),
+
           children: [
+            /// ==========================
             /// FOTO PROFIL
+            /// ==========================
             Center(
               child: Column(
                 children: [
                   const CircleAvatar(
-                    radius: 50,
+                    radius: 45,
                     backgroundColor: AppColors.primary,
-                    child: Icon(Icons.person, color: Colors.white, size: 55),
+                    child: Icon(Icons.person, color: Colors.white, size: 50),
                   ),
 
                   const SizedBox(height: 15),
@@ -49,22 +53,23 @@ class ProfileView extends GetView<ProfileController> {
                   Text(
                     controller.name.value,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 4),
 
                   Text(
                     controller.email.value,
-                    style: const TextStyle(color: Colors.grey, fontSize: 15),
+                    style: const TextStyle(color: Colors.grey, fontSize: 13),
                   ),
 
-                  const SizedBox(height: 18),
+                  const SizedBox(height: 16),
 
                   SizedBox(
-                    width: 150,
+                    width: 145,
+                    height: 42,
                     child: ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
@@ -74,30 +79,33 @@ class ProfileView extends GetView<ProfileController> {
                         ),
                       ),
                       onPressed: () {
-                        Get.snackbar(
-                          "Info",
-                          "Fitur Edit Profil akan segera tersedia.",
-                          snackPosition: SnackPosition.TOP,
-                        );
+                        Get.toNamed(Routes.EDIT_PROFILE);
                       },
-                      icon: const Icon(Icons.edit),
-                      label: const Text("Edit Profil"),
+                      icon: const Icon(Icons.edit, size: 18),
+                      label: const Text(
+                        "Edit Profil",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
 
-            const SizedBox(height: 30),
+            const SizedBox(height: 28),
 
+            /// ==========================
             /// AKUN SAYA
+            /// ==========================
             const Text(
               "Akun Saya",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 12),
-
             Card(
               elevation: 2,
               shape: RoundedRectangleBorder(
@@ -109,9 +117,13 @@ class ProfileView extends GetView<ProfileController> {
                     leading: const Icon(
                       Icons.shopping_bag_outlined,
                       color: AppColors.primary,
+                      size: 20,
                     ),
-                    title: const Text("Pesanan Saya"),
-                    trailing: const Icon(Icons.chevron_right),
+                    title: const Text(
+                      "Pesanan Saya",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
                       Get.toNamed(Routes.ORDER);
                     },
@@ -123,9 +135,13 @@ class ProfileView extends GetView<ProfileController> {
                     leading: const Icon(
                       Icons.favorite_border,
                       color: Colors.red,
+                      size: 20,
                     ),
-                    title: const Text("Wishlist"),
-                    trailing: const Icon(Icons.chevron_right),
+                    title: const Text(
+                      "Wishlist",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
                       Get.toNamed(Routes.WISHLIST);
                     },
@@ -137,9 +153,13 @@ class ProfileView extends GetView<ProfileController> {
                     leading: const Icon(
                       Icons.location_on_outlined,
                       color: Colors.blue,
+                      size: 20,
                     ),
-                    title: const Text("Alamat Saya"),
-                    trailing: const Icon(Icons.chevron_right),
+                    title: const Text(
+                      "Alamat Saya",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
                       Get.toNamed(Routes.ADDRESS);
                     },
@@ -150,14 +170,15 @@ class ProfileView extends GetView<ProfileController> {
 
             const SizedBox(height: 25),
 
+            /// ==========================
             /// LAINNYA
+            /// ==========================
             const Text(
               "Lainnya",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 12),
-
             Card(
               elevation: 2,
               shape: RoundedRectangleBorder(
@@ -166,9 +187,16 @@ class ProfileView extends GetView<ProfileController> {
               child: Column(
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.info_outline, color: Colors.teal),
-                    title: const Text("Tentang Kami"),
-                    trailing: const Icon(Icons.chevron_right),
+                    leading: const Icon(
+                      Icons.info_outline,
+                      color: Colors.teal,
+                      size: 20,
+                    ),
+                    title: const Text(
+                      "Tentang Kami",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
                       Get.toNamed(Routes.ABOUT);
                     },
@@ -177,17 +205,27 @@ class ProfileView extends GetView<ProfileController> {
                   const Divider(height: 1),
 
                   ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.red),
-                    title: const Text("Keluar"),
-                    trailing: const Icon(Icons.chevron_right),
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Colors.red,
+                      size: 20,
+                    ),
+                    title: const Text("Keluar", style: TextStyle(fontSize: 14)),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
                       Get.defaultDialog(
                         title: "Konfirmasi Logout",
+                        titleStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                         middleText:
                             "Apakah Anda yakin ingin keluar dari akun ini?",
+                        middleTextStyle: const TextStyle(fontSize: 13),
                         radius: 15,
                         textCancel: "Batal",
                         textConfirm: "Keluar",
+                        cancelTextColor: Colors.black,
                         confirmTextColor: Colors.white,
                         buttonColor: AppColors.primary,
                         onConfirm: () {
@@ -197,6 +235,15 @@ class ProfileView extends GetView<ProfileController> {
                     },
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            Center(
+              child: Text(
+                "SweetCake v1.0.0",
+                style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
               ),
             ),
 

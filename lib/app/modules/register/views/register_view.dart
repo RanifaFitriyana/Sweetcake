@@ -20,12 +20,15 @@ class RegisterView extends GetView<RegisterController> {
       controller: controllerText,
       keyboardType: keyboardType,
       obscureText: obscure,
+      style: const TextStyle(fontSize: 14),
       decoration: InputDecoration(
         hintText: hint,
-        prefixIcon: Icon(icon),
+        hintStyle: const TextStyle(fontSize: 13),
+        prefixIcon: Icon(icon, size: 20),
         suffixIcon: suffix,
         filled: true,
         fillColor: Colors.white,
+        contentPadding: const EdgeInsets.symmetric(vertical: 16),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide.none,
@@ -38,34 +41,40 @@ class RegisterView extends GetView<RegisterController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
+
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 28),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+
             children: [
               const SizedBox(height: 30),
 
-              Center(child: Image.asset("assets/images/logo.png", width: 100)),
+              Center(child: Image.asset("assets/images/logo.png", width: 95)),
 
               const SizedBox(height: 25),
 
               Row(
                 children: [
-                  Text("Halo!", style: AppTextStyles.title),
-                  const SizedBox(width: 8),
-                  const Text("👋", style: TextStyle(fontSize: 28)),
+                  Text(
+                    "Halo!",
+                    style: AppTextStyles.title.copyWith(fontSize: 22),
+                  ),
+                  const SizedBox(width: 6),
+                  const Text("👋", style: TextStyle(fontSize: 24)),
                 ],
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
 
               Text(
                 "Buat akun untuk mulai berbelanja",
-                style: AppTextStyles.body,
+                style: AppTextStyles.body.copyWith(fontSize: 13),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 28),
 
               buildField(
                 controllerText: controller.nameController,
@@ -73,7 +82,7 @@ class RegisterView extends GetView<RegisterController> {
                 icon: Icons.person_outline,
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
               buildField(
                 controllerText: controller.emailController,
@@ -82,7 +91,7 @@ class RegisterView extends GetView<RegisterController> {
                 keyboardType: TextInputType.emailAddress,
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
               buildField(
                 controllerText: controller.phoneController,
@@ -91,7 +100,7 @@ class RegisterView extends GetView<RegisterController> {
                 keyboardType: TextInputType.phone,
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
               Obx(
                 () => buildField(
@@ -104,13 +113,14 @@ class RegisterView extends GetView<RegisterController> {
                       controller.isPasswordHidden.value
                           ? Icons.visibility_off
                           : Icons.visibility,
+                      size: 20,
                     ),
                     onPressed: controller.togglePassword,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 18),
+              const SizedBox(height: 16),
 
               Obx(
                 () => buildField(
@@ -123,29 +133,37 @@ class RegisterView extends GetView<RegisterController> {
                       controller.isConfirmHidden.value
                           ? Icons.visibility_off
                           : Icons.visibility,
+                      size: 20,
                     ),
                     onPressed: controller.toggleConfirmPassword,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 28),
 
               Obx(
                 () => SizedBox(
                   width: double.infinity,
-                  height: 55,
+                  height: 50,
                   child: ElevatedButton(
                     onPressed: controller.isLoading.value
                         ? null
                         : controller.register,
                     child: controller.isLoading.value
-                        ? const CircularProgressIndicator(color: Colors.white)
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
                         : const Text(
                             "Daftar",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 17,
+                              fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -155,65 +173,36 @@ class RegisterView extends GetView<RegisterController> {
 
               const SizedBox(height: 30),
 
+              /// Sudah punya akun
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Expanded(child: Divider()),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "atau daftar dengan",
-                      style: AppTextStyles.small,
-                    ),
-                  ),
-                  const Expanded(child: Divider()),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/images/google.png",
-                        width: 22,
-                        height: 22,
-                      ),
-                      label: const Text("Google"),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
+                  const Text(
+                    "Sudah punya akun?",
+                    style: TextStyle(color: Colors.black54, fontSize: 13),
                   ),
 
-                  const SizedBox(width: 15),
+                  TextButton(
+                    onPressed: () {
+                      Get.back();
 
-                  Expanded(
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: Image.asset(
-                        "assets/images/facebook.png",
-                        width: 22,
-                        height: 22,
-                      ),
-                      label: const Text("Facebook"),
-                      style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                      // atau bisa juga:
+                      // Get.offNamed(Routes.LOGIN);
+                    },
+
+                    child: const Text(
+                      "Masuk di sini",
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                 ],
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
             ],
           ),
         ),

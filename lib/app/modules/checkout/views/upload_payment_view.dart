@@ -15,7 +15,10 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
-        title: const Text("Upload Bukti Pembayaran"),
+        title: const Text(
+          "Upload Bukti Pembayaran",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -41,8 +44,8 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
                     : controller.uploadPaymentProof,
                 child: controller.isLoading.value
                     ? const SizedBox(
-                        height: 22,
-                        width: 22,
+                        height: 20,
+                        width: 20,
                         child: CircularProgressIndicator(
                           color: Colors.white,
                           strokeWidth: 2.5,
@@ -51,7 +54,7 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
                     : const Text(
                         "Upload & Buat Pesanan",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -71,7 +74,7 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
 
             const Text(
               "Upload Bukti Pembayaran",
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
 
             const SizedBox(height: 8),
@@ -79,7 +82,7 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
             Text(
               "Silakan upload screenshot transfer atau QRIS yang telah berhasil dibayar.",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey.shade600),
+              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
             ),
 
             const SizedBox(height: 30),
@@ -100,13 +103,13 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
                         children: const [
                           Icon(
                             Icons.image_outlined,
-                            size: 80,
+                            size: 70,
                             color: Colors.grey,
                           ),
                           SizedBox(height: 10),
                           Text(
                             "Belum ada bukti pembayaran",
-                            style: TextStyle(color: Colors.grey),
+                            style: TextStyle(fontSize: 13, color: Colors.grey),
                           ),
                         ],
                       )
@@ -136,7 +139,10 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
                 ),
                 onPressed: controller.pickFromGallery,
                 icon: const Icon(Icons.photo_library),
-                label: const Text("Pilih dari Galeri"),
+                label: const Text(
+                  "Pilih dari Galeri",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
 
@@ -155,7 +161,10 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
                 ),
                 onPressed: controller.pickFromCamera,
                 icon: const Icon(Icons.camera_alt),
-                label: const Text("Ambil dari Kamera"),
+                label: const Text(
+                  "Ambil dari Kamera",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
               ),
             ),
 
@@ -170,11 +179,12 @@ class UploadPaymentView extends GetView<UploadPaymentController> {
               child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.info_outline, color: Colors.orange),
+                  Icon(Icons.info_outline, color: Colors.orange, size: 20),
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
                       "Pastikan bukti pembayaran terlihat jelas agar admin dapat melakukan verifikasi dengan mudah.",
+                      style: TextStyle(fontSize: 13),
                     ),
                   ),
                 ],

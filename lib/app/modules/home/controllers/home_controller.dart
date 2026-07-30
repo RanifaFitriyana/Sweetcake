@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../data/models/product_model.dart';
 import '../../../data/services/product_service.dart';
 
 class HomeController extends GetxController {
+  final GetStorage box = GetStorage();
+
+  RxString userName = "".obs;
+
   /// Loading
   RxBool isLoading = false.obs;
 
@@ -17,6 +22,9 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    userName.value = box.read("name") ?? "";
+
     fetchProducts();
     fetchBestProducts();
   }

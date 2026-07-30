@@ -18,10 +18,16 @@ class CartView extends GetView<CartController> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
+
         title: const Text(
           "Keranjang Belanja",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: AppColors.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 22,
+          ),
         ),
+
         iconTheme: const IconThemeData(color: Colors.black),
       ),
 
@@ -32,33 +38,48 @@ class CartView extends GetView<CartController> {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+
               children: [
                 const Icon(
                   Icons.shopping_cart_outlined,
-                  size: 90,
+                  size: 75,
                   color: Colors.grey,
                 ),
-                const SizedBox(height: 20),
+
+                const SizedBox(height: 15),
+
                 const Text(
                   "Keranjang masih kosong",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
+
                 const SizedBox(height: 8),
+
                 const Text(
                   "Yuk mulai belanja sekarang!",
-                  style: TextStyle(color: Colors.grey),
+
+                  style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
-                const SizedBox(height: 25),
+
+                const SizedBox(height: 20),
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
+
                     foregroundColor: Colors.white,
                   ),
+
                   onPressed: () {
                     Get.offAllNamed(Routes.HOME);
                   },
-                  child: const Text("Belanja Sekarang"),
+
+                  child: const Text(
+                    "Belanja Sekarang",
+
+                    style: TextStyle(fontSize: 14),
+                  ),
                 ),
               ],
             ),
@@ -67,13 +88,12 @@ class CartView extends GetView<CartController> {
 
         return Column(
           children: [
-            /// ===========================
-            /// LIST PRODUK
-            /// ===========================
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(20),
+
                 itemCount: controller.cartItems.length,
+
                 itemBuilder: (context, index) {
                   final item = controller.cartItems[index];
 
@@ -82,13 +102,12 @@ class CartView extends GetView<CartController> {
               ),
             ),
 
-            /// ===========================
-            /// RINGKASAN
-            /// ===========================
             Container(
               padding: const EdgeInsets.all(20),
+
               decoration: const BoxDecoration(
                 color: Colors.white,
+
                 borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
               ),
 
@@ -96,37 +115,50 @@ class CartView extends GetView<CartController> {
                 children: [
                   Row(
                     children: [
-                      Text("Subtotal (${controller.totalItems} Produk)"),
+                      Text(
+                        "Subtotal (${controller.totalItems} Produk)",
+
+                        style: const TextStyle(fontSize: 13),
+                      ),
 
                       const Spacer(),
 
                       Text(
                         controller.formatPrice(controller.subtotal),
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 10),
 
                   Row(
                     children: [
-                      const Text("Ongkir"),
+                      const Text("Ongkir", style: TextStyle(fontSize: 13)),
 
                       const Spacer(),
 
-                      Text(controller.formatPrice(controller.shippingCost)),
+                      Text(
+                        controller.formatPrice(controller.shippingCost),
+
+                        style: const TextStyle(fontSize: 13),
+                      ),
                     ],
                   ),
 
-                  const Divider(height: 30),
+                  const Divider(height: 25),
 
                   Row(
                     children: [
                       const Text(
                         "Total",
+
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -135,35 +167,43 @@ class CartView extends GetView<CartController> {
 
                       Text(
                         controller.formatPrice(controller.total),
+
                         style: const TextStyle(
                           color: AppColors.primary,
-                          fontSize: 22,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 15),
 
                   SizedBox(
                     width: double.infinity,
+
                     height: 55,
+
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primary,
+
                         foregroundColor: Colors.white,
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
+
                       onPressed: () {
                         Get.toNamed(Routes.CHECKOUT);
                       },
+
                       child: const Text(
                         "Checkout",
+
                         style: TextStyle(
-                          fontSize: 17,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -183,38 +223,39 @@ class CartView extends GetView<CartController> {
       onTap: () {
         Get.toNamed(Routes.DETAIL_PRODUCT, arguments: item);
       },
+
       child: Card(
         margin: const EdgeInsets.only(bottom: 15),
+
         elevation: 2,
+
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
         child: Padding(
           padding: const EdgeInsets.all(12),
+
           child: Row(
             children: [
-              /// ===========================
-              /// GAMBAR PRODUK
-              /// ===========================
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
+
                 child: Image.network(
                   item["image"],
-                  width: 90,
-                  height: 90,
-                  fit: BoxFit.cover,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
 
-                    return const SizedBox(
-                      width: 90,
-                      height: 90,
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  },
+                  width: 80,
+
+                  height: 80,
+
+                  fit: BoxFit.cover,
+
                   errorBuilder: (_, __, ___) {
                     return Container(
-                      width: 90,
-                      height: 90,
+                      width: 80,
+
+                      height: 80,
+
                       color: Colors.grey.shade200,
+
                       child: const Icon(
                         Icons.image_not_supported,
                         color: Colors.grey,
@@ -224,52 +265,58 @@ class CartView extends GetView<CartController> {
                 ),
               ),
 
-              const SizedBox(width: 15),
+              const SizedBox(width: 12),
 
-              /// ===========================
-              /// INFORMASI PRODUK
-              /// ===========================
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+
                   children: [
                     Text(
                       item["name"],
+
                       maxLines: 2,
+
                       overflow: TextOverflow.ellipsis,
+
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+
+                        fontSize: 14,
                       ),
                     ),
 
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
 
                     Text(
                       controller.formatPrice(item["price"]),
+
                       style: const TextStyle(
                         color: AppColors.primary,
+
                         fontWeight: FontWeight.bold,
-                        fontSize: 17,
+
+                        fontSize: 15,
                       ),
                     ),
                   ],
                 ),
               ),
 
-              /// ===========================
-              /// BUTTON QTY
-              /// ===========================
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey.shade300),
+
                   borderRadius: BorderRadius.circular(10),
                 ),
+
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
+
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.remove),
+                      icon: const Icon(Icons.remove, size: 18),
+
                       onPressed: () {
                         controller.decreaseQty(index);
                       },
@@ -277,14 +324,17 @@ class CartView extends GetView<CartController> {
 
                     Text(
                       "${item["qty"]}",
+
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+
+                        fontSize: 14,
                       ),
                     ),
 
                     IconButton(
-                      icon: const Icon(Icons.add),
+                      icon: const Icon(Icons.add, size: 18),
+
                       onPressed: () {
                         controller.increaseQty(index);
                       },

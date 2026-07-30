@@ -13,8 +13,10 @@ class DetailProductView extends GetView<DetailProductController> {
   @override
   Widget build(BuildContext context) {
     final ProductModel product = Get.arguments as ProductModel;
+
     final WishlistController wishlistController =
         Get.find<WishlistController>();
+
     final CartController cartController = Get.find<CartController>();
 
     return Scaffold(
@@ -76,7 +78,7 @@ class DetailProductView extends GetView<DetailProductController> {
                             Text(
                               "Berhasil!",
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -88,7 +90,7 @@ class DetailProductView extends GetView<DetailProductController> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                           ],
@@ -108,7 +110,7 @@ class DetailProductView extends GetView<DetailProductController> {
 
               child: const Text(
                 "Tambah ke Keranjang",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -125,13 +127,16 @@ class DetailProductView extends GetView<DetailProductController> {
                     bottomLeft: Radius.circular(30),
                     bottomRight: Radius.circular(30),
                   ),
+
                   child: Hero(
                     tag: product.id,
+
                     child: Image.network(
                       product.image,
                       width: double.infinity,
-                      height: 300,
+                      height: 250,
                       fit: BoxFit.cover,
+
                       errorBuilder: (_, __, ___) =>
                           const Icon(Icons.image_not_supported),
                     ),
@@ -141,10 +146,13 @@ class DetailProductView extends GetView<DetailProductController> {
                 Positioned(
                   top: 15,
                   left: 15,
+
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
+
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
+
                       onPressed: () => Get.back(),
                     ),
                   ),
@@ -153,8 +161,10 @@ class DetailProductView extends GetView<DetailProductController> {
                 Positioned(
                   top: 15,
                   right: 15,
+
                   child: CircleAvatar(
                     backgroundColor: Colors.white,
+
                     child: Obx(() {
                       final isFavorite = wishlistController.isFavorite(
                         product.id,
@@ -163,8 +173,10 @@ class DetailProductView extends GetView<DetailProductController> {
                       return IconButton(
                         icon: Icon(
                           isFavorite ? Icons.favorite : Icons.favorite_border,
+
                           color: isFavorite ? Colors.red : Colors.black,
                         ),
+
                         onPressed: () {
                           wishlistController.toggleWishlist(product);
                         },
@@ -177,13 +189,16 @@ class DetailProductView extends GetView<DetailProductController> {
 
             Padding(
               padding: const EdgeInsets.all(20),
+
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+
                 children: [
                   Text(
                     product.name,
+
                     style: const TextStyle(
-                      fontSize: 28,
+                      fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -194,52 +209,60 @@ class DetailProductView extends GetView<DetailProductController> {
                     children: [
                       Text(
                         cartController.formatPrice(product.price),
+
                         style: const TextStyle(
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,
-                          fontSize: 26,
+                          fontSize: 20,
                         ),
                       ),
 
                       const Spacer(),
 
-                      const Icon(Icons.star, color: Colors.amber),
+                      const Icon(Icons.star, color: Colors.amber, size: 20),
 
                       const SizedBox(width: 5),
 
                       Text(
                         product.rating.toString(),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
+
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ],
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  const Text(
+                    "Deskripsi",
+
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  Text(
+                    product.description,
+
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.black54,
+                      height: 1.5,
+                    ),
                   ),
 
                   const SizedBox(height: 25),
 
                   const Text(
-                    "Deskripsi",
-                    style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  Text(
-                    product.description,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Colors.black54,
-                      height: 1.6,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
                     "Jumlah",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 12),
 
                   Obx(
                     () => Row(
@@ -247,28 +270,36 @@ class DetailProductView extends GetView<DetailProductController> {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade300),
+
                             borderRadius: BorderRadius.circular(10),
                           ),
+
                           child: IconButton(
                             icon: const Icon(Icons.remove),
+
                             onPressed: controller.decrease,
                           ),
                         ),
 
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 15),
+
                           padding: const EdgeInsets.symmetric(
                             horizontal: 25,
                             vertical: 10,
                           ),
+
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade300),
+
                             borderRadius: BorderRadius.circular(10),
                           ),
+
                           child: Text(
                             controller.quantity.value.toString(),
+
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -277,10 +308,13 @@ class DetailProductView extends GetView<DetailProductController> {
                         Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade300),
+
                             borderRadius: BorderRadius.circular(10),
                           ),
+
                           child: IconButton(
                             icon: const Icon(Icons.add),
+
                             onPressed: controller.increase,
                           ),
                         ),

@@ -11,7 +11,6 @@ abstract class Routes {
   static const ORDER = _Paths.ORDER;
   static const WISHLIST = _Paths.WISHLIST;
   static const ADDRESS = _Paths.ADDRESS;
-  static const PROMO = _Paths.PROMO;
   static const ABOUT = _Paths.ABOUT;
   static const SETTING = _Paths.SETTING;
   static const PROFILE = _Paths.PROFILE;
@@ -19,6 +18,7 @@ abstract class Routes {
   static const CHECKOUT = _Paths.CHECKOUT;
   static const UPLOAD_PAYMENT = _Paths.UPLOAD_PAYMENT;
   static const SUCCESS = _Paths.SUCCESS;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
 }
 
 abstract class _Paths {
@@ -32,7 +32,6 @@ abstract class _Paths {
   static const ORDER = '/order';
   static const WISHLIST = '/wishlist';
   static const ADDRESS = '/address';
-  static const PROMO = '/promo';
   static const ABOUT = '/about';
   static const SETTING = '/setting';
   static const PROFILE = '/profile';
@@ -40,4 +39,5 @@ abstract class _Paths {
   static const CHECKOUT = '/checkout';
   static const UPLOAD_PAYMENT = '/upload-payment';
   static const SUCCESS = '/success';
+  static const EDIT_PROFILE = '/edit-profile';
 }

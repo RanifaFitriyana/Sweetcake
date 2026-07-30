@@ -1,25 +1,52 @@
 import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../data/models/order_model.dart';
+import '../../../data/services/order_service.dart';
+import '../../cart/controllers/cart_controller.dart';
+import '../../../routes/app_pages.dart';
+
 class UploadPaymentController extends GetxController {
-  /// Image Picker
-  final ImagePicker _picker = ImagePicker();
+  /// ==========================
+  /// STORAGE
+  /// ==========================
+  final box = GetStorage();
 
-  /// Bukti pembayaran
-  final Rx<File?> paymentProof = Rx<File?>(null);
+  /// ==========================
+  /// IMAGE PICKER
+  /// ==========================
+  final ImagePicker picker = ImagePicker();
 
-  /// Loading
+  Rx<File?> paymentProof = Rx<File?>(null);
+
   RxBool isLoading = false.obs;
 
   /// ==========================
-  /// Ambil dari Galeri
+  /// DATA ORDER DARI CHECKOUT
+  /// ==========================
+  late OrderModel order;
+
+  final CartController cartController = Get.find<CartController>();
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    /// ambil data dari checkout
+    if (Get.arguments != null) {
+      order = Get.arguments as OrderModel;
+    }
+  }
+
+  /// ==========================
+  /// PILIH GALERI
   /// ==========================
   Future<void> pickFromGallery() async {
-    final XFile? image = await _picker.pickImage(
+    final XFile? image = await picker.pickImage(
       source: ImageSource.gallery,
+
       imageQuality: 80,
     );
 
@@ -29,11 +56,12 @@ class UploadPaymentController extends GetxController {
   }
 
   /// ==========================
-  /// Ambil dari Kamera
+  /// AMBIL KAMERA
   /// ==========================
   Future<void> pickFromCamera() async {
-    final XFile? image = await _picker.pickImage(
+    final XFile? image = await picker.pickImage(
       source: ImageSource.camera,
+
       imageQuality: 80,
     );
 
@@ -43,39 +71,80 @@ class UploadPaymentController extends GetxController {
   }
 
   /// ==========================
-  /// Upload Bukti Pembayaran
+  /// UPLOAD & CREATE ORDER
   /// ==========================
   Future<void> uploadPaymentProof() async {
     if (paymentProof.value == null) {
       Get.snackbar(
         "Peringatan",
-        "Silakan pilih bukti pembayaran terlebih dahulu.",
+
+        "Silakan upload bukti pembayaran.",
+
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.orange.shade100,
       );
+
       return;
     }
 
-    isLoading.value = true;
-
     try {
-      /// ==========================
-      /// TODO:
-      /// Upload ke Backend Express
-      /// ==========================
-      await Future.delayed(const Duration(seconds: 2));
+      isLoading.value = true;
 
-      isLoading.value = false;
+      final token = box.read("token");
 
-      Get.offAllNamed('/success');
-    } catch (e) {
-      isLoading.value = false;
+      if (token == null) {
+        Get.snackbar("Error", "Silakan login kembali.");
 
-      Get.snackbar(
-        "Gagal",
-        "Upload bukti pembayaran gagal.",
-        snackPosition: SnackPosition.BOTTOM,
+        return;
+      }
+
+      /// sementara simpan path gambar
+      /// nanti bisa diganti upload multer/cloudinary
+
+      final updatedOrder = OrderModel(
+        customerName: order.customerName,
+
+        phone: order.phone,
+
+        address: order.address,
+
+        latitude: order.latitude,
+
+        longitude: order.longitude,
+
+        paymentMethod: order.paymentMethod,
+
+        paymentProof: paymentProof.value!.path,
+
+        items: order.items,
+
+        total: order.total,
+
+        status: "Menunggu Verifikasi",
       );
+
+      final success = await OrderService.createOrder(
+        token: token,
+
+        order: updatedOrder,
+      );
+
+      if (!success) {
+        Get.snackbar("Gagal", "Pesanan gagal dibuat.");
+
+        return;
+      }
+
+      /// hapus isi keranjang
+
+      cartController.clearCart();
+
+      Get.snackbar("Berhasil", "Pesanan berhasil dibuat.");
+
+      Get.offAllNamed(Routes.SUCCESS);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      isLoading.value = false;
     }
   }
 }

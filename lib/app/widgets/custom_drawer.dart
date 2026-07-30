@@ -101,13 +101,7 @@ class CustomDrawer extends StatelessWidget {
                     "Alamat Saya",
                     () => Get.toNamed(Routes.ADDRESS),
                   ),
-
-                  _drawerItem(
-                    Icons.local_offer_outlined,
-                    "Promo",
-                    () => Get.toNamed(Routes.PROMO),
-                  ),
-
+                  
                   _drawerItem(
                     Icons.info_outline,
                     "Tentang Kami",
