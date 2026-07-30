@@ -245,4 +245,83 @@ class ApiService {
       body: jsonEncode({"email": email, "password": password}),
     );
   }
+
+  /// ===================================
+  /// ADMIN DASHBOARD
+  /// ===================================
+  static Future<http.Response> getAdminDashboard({
+    required String token,
+  }) async {
+    return await http.get(
+      Uri.parse("$baseUrl/admin/dashboard"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
+
+  /// ===================================
+  /// ADMIN GET PRODUCTS
+  /// ===================================
+  static Future<http.Response> getAdminProducts({required String token}) async {
+    return await http.get(
+      Uri.parse("$baseUrl/admin/products"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
+
+  /// ===================================
+  /// ADMIN CREATE PRODUCT
+  /// ===================================
+  static Future<http.Response> createAdminProduct({
+    required String token,
+    required Map<String, dynamic> data,
+  }) async {
+    return await http.post(
+      Uri.parse("$baseUrl/admin/products"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(data),
+    );
+  }
+
+  /// ===================================
+  /// ADMIN UPDATE PRODUCT
+  /// ===================================
+  static Future<http.Response> updateAdminProduct({
+    required String token,
+    required String id,
+    required Map<String, dynamic> data,
+  }) async {
+    return await http.put(
+      Uri.parse("$baseUrl/admin/products/$id"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(data),
+    );
+  }
+
+  /// ===================================
+  /// ADMIN DELETE PRODUCT
+  /// ===================================
+  static Future<http.Response> deleteAdminProduct({
+    required String token,
+    required String id,
+  }) async {
+    return await http.delete(
+      Uri.parse("$baseUrl/admin/products/$id"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
 }

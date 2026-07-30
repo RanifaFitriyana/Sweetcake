@@ -4,6 +4,18 @@ import '../modules/about/bindings/about_binding.dart';
 import '../modules/about/views/about_view.dart';
 import '../modules/address/bindings/address_binding.dart';
 import '../modules/address/views/address_view.dart';
+import '../modules/admin_dashboard/bindings/admin_dashboard_binding.dart';
+import '../modules/admin_dashboard/views/admin_dashboard_view.dart';
+import '../modules/admin_order/bindings/admin_order_binding.dart';
+import '../modules/admin_order/views/admin_order_view.dart';
+import '../modules/admin_product/bindings/admin_product_binding.dart';
+import '../modules/admin_product/views/admin_product_view.dart';
+import '../modules/admin_profile/bindings/admin_profile_binding.dart';
+import '../modules/admin_profile/views/admin_profile_view.dart';
+import '../modules/admin_report/bindings/admin_report_binding.dart';
+import '../modules/admin_report/views/admin_report_view.dart';
+import '../modules/admin_user/bindings/admin_user_binding.dart';
+import '../modules/admin_user/views/admin_user_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
 import '../modules/category/bindings/category_binding.dart';
@@ -120,6 +132,36 @@ class AppPages {
       name: _Paths.EDIT_PROFILE,
       page: () => const EditProfileView(),
       binding: EditProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_DASHBOARD,
+      page: () => const AdminDashboardView(),
+      binding: AdminDashboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_PRODUCT,
+      page: () => const AdminProductView(),
+      binding: AdminProductBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_ORDER,
+      page: () => const AdminOrderView(),
+      binding: AdminOrderBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_USER,
+      page: () => const AdminUserView(),
+      binding: AdminUserBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_PROFILE,
+      page: () => const AdminProfileView(),
+      binding: AdminProfileBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_REPORT,
+      page: () => const AdminReportView(),
+      binding: AdminReportBinding(),
     ),
   ];
 }

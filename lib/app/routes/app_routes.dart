@@ -19,6 +19,12 @@ abstract class Routes {
   static const UPLOAD_PAYMENT = _Paths.UPLOAD_PAYMENT;
   static const SUCCESS = _Paths.SUCCESS;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const ADMIN_DASHBOARD = _Paths.ADMIN_DASHBOARD;
+  static const ADMIN_PRODUCT = _Paths.ADMIN_PRODUCT;
+  static const ADMIN_ORDER = _Paths.ADMIN_ORDER;
+  static const ADMIN_USER = _Paths.ADMIN_USER;
+  static const ADMIN_PROFILE = _Paths.ADMIN_PROFILE;
+  static const ADMIN_REPORT = _Paths.ADMIN_REPORT;
 }
 
 abstract class _Paths {
@@ -40,4 +46,10 @@ abstract class _Paths {
   static const UPLOAD_PAYMENT = '/upload-payment';
   static const SUCCESS = '/success';
   static const EDIT_PROFILE = '/edit-profile';
+  static const ADMIN_DASHBOARD = '/admin-dashboard';
+  static const ADMIN_PRODUCT = '/admin-product';
+  static const ADMIN_ORDER = '/admin-order';
+  static const ADMIN_USER = '/admin-user';
+  static const ADMIN_PROFILE = '/admin-profile';
+  static const ADMIN_REPORT = '/admin-report';
 }

@@ -58,7 +58,11 @@ class LoginController extends GetxController {
           snackPosition: SnackPosition.TOP,
         );
 
-        Get.offAllNamed(Routes.HOME);
+        if (data["user"]["role"] == "admin") {
+          Get.offAllNamed(Routes.ADMIN_DASHBOARD);
+        } else {
+          Get.offAllNamed(Routes.HOME);
+        }
       } else {
         Get.snackbar(
           "Login Gagal",
