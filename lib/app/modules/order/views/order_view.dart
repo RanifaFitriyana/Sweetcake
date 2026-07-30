@@ -275,6 +275,10 @@ class OrderView extends GetView<OrderController> {
         color = Colors.green;
         break;
 
+      case "Batal":
+        color = Colors.red;
+        break;
+
       default:
         color = Colors.grey;
     }

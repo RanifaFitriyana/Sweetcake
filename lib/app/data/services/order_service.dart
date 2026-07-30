@@ -1,5 +1,6 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import '../models/order_model.dart';
 import 'api_service.dart';
 
@@ -73,5 +74,25 @@ class OrderService {
     print(response.body);
 
     return response.statusCode == 200;
+  }
+
+  static Future<String> uploadPaymentProof({
+    required String token,
+    required File image,
+  }) async {
+    final response = await ApiService.uploadPaymentProof(
+      token: token,
+      image: image,
+    );
+
+    final result = await http.Response.fromStream(response);
+
+    if (result.statusCode == 200) {
+      final json = jsonDecode(result.body);
+
+      return json["image"];
+    }
+
+    throw Exception(result.body);
   }
 }

@@ -25,6 +25,7 @@ abstract class Routes {
   static const ADMIN_USER = _Paths.ADMIN_USER;
   static const ADMIN_PROFILE = _Paths.ADMIN_PROFILE;
   static const ADMIN_REPORT = _Paths.ADMIN_REPORT;
+  static const ADMIN_ORDER_DETAIL = _Paths.ADMIN_ORDER_DETAIL;
 }
 
 abstract class _Paths {
@@ -52,4 +53,5 @@ abstract class _Paths {
   static const ADMIN_USER = '/admin-user';
   static const ADMIN_PROFILE = '/admin-profile';
   static const ADMIN_REPORT = '/admin-report';
+  static const ADMIN_ORDER_DETAIL = '/admin-order-detail';
 }

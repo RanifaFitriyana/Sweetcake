@@ -126,26 +126,8 @@ class ApiService {
   }
 
   /// ==========================
-  /// UPLOAD IMAGE
-  /// ==========================
-  static Future<http.StreamedResponse> uploadPaymentProof({
-    required File image,
-
-    required String token,
-  }) async {
-    var request = http.MultipartRequest("POST", Uri.parse("$baseUrl/upload"));
-
-    request.headers["Authorization"] = "Bearer $token";
-
-    request.files.add(await http.MultipartFile.fromPath("image", image.path));
-
-    return await request.send();
-  }
-
-  /// ==========================
   /// ADDRESS
   /// ==========================
-
   static Future<http.Response> getAddresses({required String token}) async {
     return await http.get(
       Uri.parse("$baseUrl/address"),
@@ -323,5 +305,65 @@ class ApiService {
         "Authorization": "Bearer $token",
       },
     );
+  }
+
+  /// ===================================
+  /// ADMIN GET ALL ORDERS
+  /// ===================================
+  static Future<http.Response> getAdminOrders({required String token}) async {
+    return await http.get(
+      Uri.parse("$baseUrl/admin/orders"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
+
+  /// ===================================
+  /// ADMIN GET ORDER DETAIL
+  /// ===================================
+  static Future<http.Response> getAdminOrderDetail({
+    required String token,
+    required String id,
+  }) async {
+    return await http.get(
+      Uri.parse("$baseUrl/admin/orders/$id"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
+
+  /// ===================================
+  /// ADMIN UPDATE ORDER STATUS
+  /// ===================================
+  static Future<http.Response> updateAdminOrderStatus({
+    required String token,
+    required String id,
+    required String status,
+  }) async {
+    return await http.patch(
+      Uri.parse("$baseUrl/admin/orders/$id/status"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode({"status": status}),
+    );
+  }
+
+  static Future<http.StreamedResponse> uploadPaymentProof({
+    required File image,
+    required String token,
+  }) async {
+    final request = http.MultipartRequest("POST", Uri.parse("$baseUrl/upload"));
+
+    request.headers["Authorization"] = "Bearer $token";
+
+    request.files.add(await http.MultipartFile.fromPath("image", image.path));
+
+    return request.send();
   }
 }

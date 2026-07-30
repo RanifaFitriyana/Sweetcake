@@ -162,23 +162,115 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                     title: "Logout",
                     color: Colors.red,
                     onTap: () {
-                      Get.defaultDialog(
-                        backgroundColor: Colors.white,
-                        radius: 15,
-                        title: "Konfirmasi Logout",
-                        titleStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      Get.dialog(
+                        Dialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 24,
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.logout_rounded,
+                                  color: Colors.red,
+                                  size: 48,
+                                ),
+
+                                const SizedBox(height: 16),
+
+                                const Text(
+                                  "Konfirmasi Logout",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 8),
+
+                                const Text(
+                                  "Apakah Anda yakin ingin keluar dari akun ini?",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.black54,
+                                    height: 1.4,
+                                  ),
+                                ),
+
+                                const SizedBox(height: 22),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 90,
+                                      height: 38,
+                                      child: OutlinedButton(
+                                        onPressed: () => Get.back(),
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                            color: Colors.green,
+                                          ),
+                                          foregroundColor: Colors.green,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                        child: const Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 12),
+
+                                    SizedBox(
+                                      width: 90,
+                                      height: 38,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Get.back();
+                                          controller.logout();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          foregroundColor: Colors.white,
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                        child: const Text(
+                                          "Keluar",
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        middleText:
-                            "Apakah Anda yakin ingin keluar dari akun admin?",
-                        middleTextStyle: const TextStyle(fontSize: 13),
-                        textCancel: "Batal",
-                        textConfirm: "Keluar",
-                        cancelTextColor: Colors.red,
-                        confirmTextColor: Colors.white,
-                        buttonColor: Colors.green,
-                        onConfirm: controller.logout,
                       );
                     },
                   ),

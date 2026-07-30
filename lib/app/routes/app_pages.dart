@@ -8,6 +8,8 @@ import '../modules/admin_dashboard/bindings/admin_dashboard_binding.dart';
 import '../modules/admin_dashboard/views/admin_dashboard_view.dart';
 import '../modules/admin_order/bindings/admin_order_binding.dart';
 import '../modules/admin_order/views/admin_order_view.dart';
+import '../modules/admin_order_detail/bindings/admin_order_detail_binding.dart';
+import '../modules/admin_order_detail/views/admin_order_detail_view.dart';
 import '../modules/admin_product/bindings/admin_product_binding.dart';
 import '../modules/admin_product/views/admin_product_view.dart';
 import '../modules/admin_profile/bindings/admin_profile_binding.dart';
@@ -162,6 +164,11 @@ class AppPages {
       name: _Paths.ADMIN_REPORT,
       page: () => const AdminReportView(),
       binding: AdminReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADMIN_ORDER_DETAIL,
+      page: () => const AdminOrderDetailView(),
+      binding: AdminOrderDetailBinding(),
     ),
   ];
 }

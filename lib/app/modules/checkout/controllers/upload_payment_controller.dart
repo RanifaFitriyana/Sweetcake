@@ -1,18 +1,19 @@
 import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../data/models/order_model.dart';
 import '../../../data/services/order_service.dart';
-import '../../cart/controllers/cart_controller.dart';
 import '../../../routes/app_pages.dart';
+import '../../cart/controllers/cart_controller.dart';
 
 class UploadPaymentController extends GetxController {
   /// ==========================
   /// STORAGE
   /// ==========================
-  final box = GetStorage();
+  final GetStorage box = GetStorage();
 
   /// ==========================
   /// IMAGE PICKER
@@ -24,7 +25,7 @@ class UploadPaymentController extends GetxController {
   RxBool isLoading = false.obs;
 
   /// ==========================
-  /// DATA ORDER DARI CHECKOUT
+  /// DATA ORDER
   /// ==========================
   late OrderModel order;
 
@@ -34,19 +35,17 @@ class UploadPaymentController extends GetxController {
   void onInit() {
     super.onInit();
 
-    /// ambil data dari checkout
     if (Get.arguments != null) {
       order = Get.arguments as OrderModel;
     }
   }
 
   /// ==========================
-  /// PILIH GALERI
+  /// PICK GALLERY
   /// ==========================
   Future<void> pickFromGallery() async {
     final XFile? image = await picker.pickImage(
       source: ImageSource.gallery,
-
       imageQuality: 80,
     );
 
@@ -56,12 +55,11 @@ class UploadPaymentController extends GetxController {
   }
 
   /// ==========================
-  /// AMBIL KAMERA
+  /// PICK CAMERA
   /// ==========================
   Future<void> pickFromCamera() async {
     final XFile? image = await picker.pickImage(
       source: ImageSource.camera,
-
       imageQuality: 80,
     );
 
@@ -71,76 +69,60 @@ class UploadPaymentController extends GetxController {
   }
 
   /// ==========================
-  /// UPLOAD & CREATE ORDER
+  /// UPLOAD PAYMENT
   /// ==========================
   Future<void> uploadPaymentProof() async {
     if (paymentProof.value == null) {
-      Get.snackbar(
-        "Peringatan",
-
-        "Silakan upload bukti pembayaran.",
-
-        snackPosition: SnackPosition.BOTTOM,
-      );
-
+      Get.snackbar("Peringatan", "Silakan upload bukti pembayaran.");
       return;
     }
 
     try {
       isLoading.value = true;
 
-      final token = box.read("token");
+      final String? token = box.read("token");
 
-      if (token == null) {
+      if (token == null || token.isEmpty) {
         Get.snackbar("Error", "Silakan login kembali.");
-
         return;
       }
 
-      /// sementara simpan path gambar
-      /// nanti bisa diganti upload multer/cloudinary
+      /// Upload gambar ke backend
+      final String imageUrl = await OrderService.uploadPaymentProof(
+        token: token,
+        image: paymentProof.value!,
+      );
 
-      final updatedOrder = OrderModel(
+      /// Buat object order baru dengan URL gambar
+      final OrderModel updatedOrder = OrderModel(
         customerName: order.customerName,
-
         phone: order.phone,
-
         address: order.address,
-
         latitude: order.latitude,
-
         longitude: order.longitude,
-
         paymentMethod: order.paymentMethod,
-
-        paymentProof: paymentProof.value!.path,
-
+        paymentProof: imageUrl,
         items: order.items,
-
         total: order.total,
-
         status: "Menunggu Verifikasi",
       );
 
-      final success = await OrderService.createOrder(
+      /// Simpan order
+      final bool success = await OrderService.createOrder(
         token: token,
-
         order: updatedOrder,
       );
 
       if (!success) {
         Get.snackbar("Gagal", "Pesanan gagal dibuat.");
-
         return;
       }
 
-      /// hapus isi keranjang
-
       cartController.clearCart();
 
-      Get.snackbar("Berhasil", "Pesanan berhasil dibuat.");
-
       Get.offAllNamed(Routes.SUCCESS);
+
+      Get.snackbar("Berhasil", "Pesanan berhasil dibuat.");
     } catch (e) {
       Get.snackbar("Error", e.toString());
     } finally {
