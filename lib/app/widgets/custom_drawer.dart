@@ -101,7 +101,7 @@ class CustomDrawer extends StatelessWidget {
                     "Alamat Saya",
                     () => Get.toNamed(Routes.ADDRESS),
                   ),
-                  
+
                   _drawerItem(
                     Icons.info_outline,
                     "Tentang Kami",
@@ -111,20 +111,119 @@ class CustomDrawer extends StatelessWidget {
                   const Divider(),
 
                   _drawerItem(Icons.logout, "Keluar", () {
-                    Get.defaultDialog(
-                      title: "Konfirmasi Logout",
-                      middleText:
-                          "Apakah Anda yakin ingin keluar dari akun ini?",
-                      radius: 15,
-                      textCancel: "Batal",
-                      textConfirm: "Keluar",
-                      confirmTextColor: Colors.white,
-                      buttonColor: AppColors.primary,
-                      onConfirm: () {
-                        box.erase();
+                    Get.dialog(
+                      AlertDialog(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
+                        ),
+                        contentPadding: const EdgeInsets.fromLTRB(
+                          22,
+                          20,
+                          22,
+                          16,
+                        ),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundColor: Colors.red.shade50,
+                              child: const Icon(
+                                Icons.logout_rounded,
+                                color: Colors.red,
+                                size: 28,
+                              ),
+                            ),
 
-                        Get.offAllNamed(Routes.LOGIN);
-                      },
+                            const SizedBox(height: 16),
+
+                            const Text(
+                              "Konfirmasi Logout",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            const SizedBox(height: 8),
+
+                            const Text(
+                              "Apakah Anda yakin ingin keluar dari akun ini?",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black54,
+                                height: 1.4,
+                              ),
+                            ),
+
+                            const SizedBox(height: 22),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 90,
+                                  height: 38,
+                                  child: OutlinedButton(
+                                    onPressed: () => Get.back(),
+                                    style: OutlinedButton.styleFrom(
+                                      side: const BorderSide(
+                                        color: Colors.green,
+                                      ),
+                                      foregroundColor: Colors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    child: const Text(
+                                      "Batal",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 12),
+
+                                SizedBox(
+                                  width: 90,
+                                  height: 38,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Get.back();
+
+                                      box.erase();
+
+                                      Get.offAllNamed(Routes.LOGIN);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: Colors.white,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      padding: EdgeInsets.zero,
+                                    ),
+                                    child: const Text(
+                                      "Keluar",
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   }),
                 ],

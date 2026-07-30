@@ -23,7 +23,7 @@ class ProfileView extends GetView<ProfileController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
-            fontSize: 17,
+            fontSize: 20,
           ),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
@@ -211,26 +211,121 @@ class ProfileView extends GetView<ProfileController> {
                       size: 20,
                     ),
                     title: const Text("Keluar", style: TextStyle(fontSize: 14)),
-                    trailing: const Icon(Icons.chevron_right, size: 20),
                     onTap: () {
-                      Get.defaultDialog(
-                        title: "Konfirmasi Logout",
-                        titleStyle: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                      Get.dialog(
+                        AlertDialog(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          contentPadding: const EdgeInsets.fromLTRB(
+                            22,
+                            20,
+                            22,
+                            16,
+                          ),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                radius: 28,
+                                backgroundColor: Colors.red.shade50,
+                                child: const Icon(
+                                  Icons.logout_rounded,
+                                  color: Colors.red,
+                                  size: 28,
+                                ),
+                              ),
+
+                              const SizedBox(height: 16),
+
+                              const Text(
+                                "Konfirmasi Logout",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              const SizedBox(height: 8),
+
+                              const Text(
+                                "Apakah Anda yakin ingin keluar dari akun ini?",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: Colors.black54,
+                                  height: 1.4,
+                                ),
+                              ),
+
+                              const SizedBox(height: 22),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(
+                                    width: 90,
+                                    height: 38,
+                                    child: OutlinedButton(
+                                      onPressed: () => Get.back(),
+                                      style: OutlinedButton.styleFrom(
+                                        side: const BorderSide(
+                                          color: Colors.green,
+                                        ),
+                                        foregroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                      child: const Text(
+                                        "Batal",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 12),
+
+                                  SizedBox(
+                                    width: 90,
+                                    height: 38,
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Get.back();
+                                        controller.logout();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            10,
+                                          ),
+                                        ),
+                                        padding: EdgeInsets.zero,
+                                      ),
+                                      child: const Text(
+                                        "Keluar",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                        middleText:
-                            "Apakah Anda yakin ingin keluar dari akun ini?",
-                        middleTextStyle: const TextStyle(fontSize: 13),
-                        radius: 15,
-                        textCancel: "Batal",
-                        textConfirm: "Keluar",
-                        cancelTextColor: Colors.black,
-                        confirmTextColor: Colors.white,
-                        buttonColor: AppColors.primary,
-                        onConfirm: () {
-                          controller.logout();
-                        },
                       );
                     },
                   ),

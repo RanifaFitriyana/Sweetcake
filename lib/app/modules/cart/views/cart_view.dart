@@ -24,7 +24,7 @@ class CartView extends GetView<CartController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontSize: 20,
           ),
         ),
 

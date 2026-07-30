@@ -5,7 +5,6 @@ import '../../../data/models/product_model.dart';
 import '../../../routes/app_pages.dart';
 import '../../../theme/app_colors.dart';
 import '../../../widgets/custom_bottom_navbar.dart';
-import '../../../widgets/custom_drawer.dart';
 import '../controllers/category_controller.dart';
 
 class CategoryView extends GetView<CategoryController> {
@@ -15,8 +14,6 @@ class CategoryView extends GetView<CategoryController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
-      drawer: CustomDrawer(),
 
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -28,7 +25,7 @@ class CategoryView extends GetView<CategoryController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontSize: 20,
           ),
         ),
       ),

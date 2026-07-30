@@ -13,11 +13,14 @@ class EditProfileView extends GetView<EditProfileController> {
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
-        title: const Text("Edit Profil"),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        elevation: 0,
+        title: const Text(
+          "Edit Profil",
+          style: TextStyle(
+            color: AppColors.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
       ),
 
       body: SafeArea(
