@@ -159,40 +159,150 @@ class AdminOrderController extends GetxController {
   void showStatusDialog(AdminOrderModel order) {
     String selected = order.status;
 
-    Get.defaultDialog(
-      backgroundColor: Colors.white,
-      radius: 16,
-      title: "Ubah Status",
-      titleStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      content: StatefulBuilder(
-        builder: (context, setState) {
-          return DropdownButton<String>(
-            isExpanded: true,
-            value: selected,
-            items: statusList
-                .where((e) => e != "Semua")
-                .map(
-                  (status) =>
-                      DropdownMenuItem(value: status, child: Text(status)),
-                )
-                .toList(),
-            onChanged: (value) {
-              if (value != null) {
-                setState(() {
-                  selected = value;
-                });
-              }
-            },
-          );
-        },
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
+        title: const Text(
+          "Ubah Status",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+
+        contentPadding: const EdgeInsets.fromLTRB(22, 10, 22, 16),
+
+        content: StatefulBuilder(
+          builder: (context, setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Colors.green.shade50,
+                  child: const Icon(
+                    Icons.local_shipping_rounded,
+                    color: Colors.green,
+                    size: 28,
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                const Text(
+                  "Pilih status pesanan baru",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 13, color: Colors.black54),
+                ),
+
+                const SizedBox(height: 16),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    underline: const SizedBox(),
+
+                    value: selected,
+
+                    items: statusList
+                        .where((e) => e != "Semua")
+                        .map(
+                          (status) => DropdownMenuItem(
+                            value: status,
+                            child: Text(
+                              status,
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                          ),
+                        )
+                        .toList(),
+
+                    onChanged: (value) {
+                      if (value != null) {
+                        setState(() {
+                          selected = value;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.green),
+
+                    foregroundColor: Colors.green,
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  child: const Text(
+                    "Batal",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.back();
+
+                    updateStatus(orderId: order.id, status: selected);
+                  },
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      textCancel: "Batal",
-      textConfirm: "Simpan",
-      confirmTextColor: Colors.white,
-      buttonColor: Colors.green,
-      onConfirm: () {
-        updateStatus(orderId: order.id, status: selected);
-      },
     );
   }
 }

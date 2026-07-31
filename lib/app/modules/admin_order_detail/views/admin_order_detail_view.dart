@@ -491,26 +491,57 @@ class AdminOrderDetailView extends GetView<AdminOrderDetailController> {
                   Obx(
                     () => DropdownButtonFormField<String>(
                       value: controller.selectedStatus.value,
+
+                      icon: const Icon(Icons.keyboard_arrow_down_rounded),
+
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
+
                         contentPadding: const EdgeInsets.symmetric(
                           horizontal: 16,
                           vertical: 14,
                         ),
-                        border: OutlineInputBorder(
+
+                        enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
+                          borderSide: BorderSide(color: Colors.grey.shade200),
+                        ),
+
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: const BorderSide(
+                            color: Colors.green,
+                            width: 1.5,
+                          ),
                         ),
                       ),
+
                       items: controller.statusList
                           .map(
                             (status) => DropdownMenuItem(
                               value: status,
-                              child: Text(status),
+
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    _statusIcon(status),
+                                    size: 18,
+                                    color: _statusColor(status),
+                                  ),
+
+                                  const SizedBox(width: 10),
+
+                                  Text(
+                                    status,
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                ],
+                              ),
                             ),
                           )
                           .toList(),
+
                       onChanged: controller.changeStatus,
                     ),
                   ),

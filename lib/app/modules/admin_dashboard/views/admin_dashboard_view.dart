@@ -147,16 +147,7 @@ class AdminDashboardView extends GetView<AdminDashboardController> {
                       Get.toNamed(Routes.ADMIN_USER);
                     },
                   ),
-
-                  _menuCard(
-                    icon: Icons.bar_chart,
-                    title: "Laporan Penjualan",
-                    color: Colors.purple,
-                    onTap: () {
-                      Get.toNamed(Routes.ADMIN_REPORT);
-                    },
-                  ),
-
+                  
                   _menuCard(
                     icon: Icons.logout,
                     title: "Logout",

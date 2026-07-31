@@ -36,10 +36,6 @@ class AdminBottomNavbar extends StatelessWidget {
           case 3:
             Get.offAllNamed(Routes.ADMIN_USER);
             break;
-
-          case 4:
-            Get.offAllNamed(Routes.ADMIN_PROFILE);
-            break;
         }
       },
       items: const [
@@ -65,12 +61,6 @@ class AdminBottomNavbar extends StatelessWidget {
           icon: Icon(Icons.people_outline),
           activeIcon: Icon(Icons.people),
           label: "User",
-        ),
-
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person_outline),
-          activeIcon: Icon(Icons.person),
-          label: "Profil",
         ),
       ],
     );

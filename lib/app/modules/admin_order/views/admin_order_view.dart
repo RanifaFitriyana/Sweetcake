@@ -311,23 +311,37 @@ class AdminOrderView extends GetView<AdminOrderController> {
     final color = _statusColor(status);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+
       decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(30),
-        border: Border.all(color: color, width: 1),
+        color: color.withOpacity(0.10),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.4), width: 1),
       ),
+
       child: Row(
         mainAxisSize: MainAxisSize.min,
+
         children: [
-          Icon(_statusIcon(status), size: 14, color: color),
-          const SizedBox(width: 5),
+          Container(
+            padding: const EdgeInsets.all(3),
+
+            decoration: BoxDecoration(
+              color: color.withOpacity(0.15),
+              shape: BoxShape.circle,
+            ),
+
+            child: Icon(_statusIcon(status), size: 12, color: color),
+          ),
+
+          const SizedBox(width: 6),
+
           Text(
             status,
             style: TextStyle(
               color: color,
               fontSize: 11,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
             ),
           ),
         ],
@@ -341,22 +355,22 @@ class AdminOrderView extends GetView<AdminOrderController> {
   IconData _statusIcon(String status) {
     switch (status) {
       case "Menunggu Verifikasi":
-        return Icons.access_time_filled;
+        return Icons.pending_actions_rounded;
 
       case "Diproses":
-        return Icons.inventory_2;
+        return Icons.inventory_2_rounded;
 
       case "Dikirim":
-        return Icons.local_shipping;
+        return Icons.local_shipping_rounded;
 
       case "Selesai":
-        return Icons.check_circle;
+        return Icons.check_circle_rounded;
 
       case "Dibatalkan":
-        return Icons.cancel;
+        return Icons.cancel_rounded;
 
       default:
-        return Icons.info_outline;
+        return Icons.info_outline_rounded;
     }
   }
 

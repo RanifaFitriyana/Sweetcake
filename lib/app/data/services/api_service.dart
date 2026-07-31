@@ -366,4 +366,33 @@ class ApiService {
 
     return request.send();
   }
+
+  /// ===================================
+  /// ADMIN GET USERS
+  /// ===================================
+  static Future<http.Response> getAdminUsers({required String token}) async {
+    return await http.get(
+      Uri.parse("$baseUrl/admin/users"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
+
+  /// ===================================
+  /// ADMIN DELETE USER
+  /// ===================================
+  static Future<http.Response> deleteAdminUser({
+    required String token,
+    required String id,
+  }) async {
+    return await http.delete(
+      Uri.parse("$baseUrl/admin/users/$id"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+  }
 }

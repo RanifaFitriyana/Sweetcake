@@ -246,10 +246,13 @@ class AdminProductView extends GetView<AdminProductController> {
       AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
         title: const Text(
           "Tambah Produk",
+          textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+
         content: SizedBox(
           width: 420,
           child: SingleChildScrollView(
@@ -307,25 +310,70 @@ class AdminProductView extends GetView<AdminProductController> {
             ),
           ),
         ),
+
         actions: [
-          OutlinedButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: const Text("Batal"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-            onPressed: () async {
-              final success = await controller.createProduct();
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.green),
+                    foregroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text(
+                    "Batal",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
 
-              if (success) {
-                Get.back();
+              const SizedBox(width: 12),
 
-                Get.snackbar("Berhasil", "Produk berhasil ditambahkan.");
-              }
-            },
-            child: const Text("Simpan", style: TextStyle(color: Colors.white)),
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  onPressed: () async {
+                    final success = await controller.createProduct();
+
+                    if (success) {
+                      Get.back();
+
+                      Get.snackbar(
+                        "Berhasil",
+                        "Produk berhasil ditambahkan.",
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    }
+                  },
+
+                  child: const Text(
+                    "Simpan",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -342,10 +390,13 @@ class AdminProductView extends GetView<AdminProductController> {
       AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
         title: const Text(
           "Edit Produk",
+          textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+
         content: SizedBox(
           width: 420,
           child: SingleChildScrollView(
@@ -403,25 +454,76 @@ class AdminProductView extends GetView<AdminProductController> {
             ),
           ),
         ),
+
         actions: [
-          OutlinedButton(
-            onPressed: () {
-              Get.back();
-            },
-            child: const Text("Batal"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
-            onPressed: () async {
-              final success = await controller.updateProduct(product.id);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
 
-              if (success) {
-                Get.back();
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.green),
+                    foregroundColor: Colors.green,
 
-                Get.snackbar("Berhasil", "Produk berhasil diperbarui.");
-              }
-            },
-            child: const Text("Update", style: TextStyle(color: Colors.white)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  child: const Text(
+                    "Batal",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  onPressed: () async {
+                    final success = await controller.updateProduct(product.id);
+
+                    if (success) {
+                      Get.back();
+
+                      Get.snackbar(
+                        "Berhasil",
+                        "Produk berhasil diperbarui.",
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    }
+                  },
+
+                  child: const Text(
+                    "Update",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -436,40 +538,82 @@ class AdminProductView extends GetView<AdminProductController> {
       AlertDialog(
         backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+
         title: const Text(
           "Hapus Produk",
+          textAlign: TextAlign.center,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
+
         content: Text(
-          "Apakah Anda yakin ingin menghapus produk\n'${product.name}' ?",
+          "Apakah Anda yakin ingin menghapus produk\n'${product.name}'?",
+          textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 14),
         ),
+
         actions: [
-          OutlinedButton(
-            onPressed: () {
-              Get.back();
-            },
-            style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.grey.shade700,
-            ),
-            child: const Text("Batal"),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
-            onPressed: () async {
-              final success = await controller.deleteProduct(product.id);
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Colors.green),
+                    foregroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+                  child: const Text(
+                    "Batal",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
 
-              if (success) {
-                Get.back();
+              const SizedBox(width: 12),
 
-                Get.snackbar(
-                  "Berhasil",
-                  "Produk berhasil dihapus.",
-                  snackPosition: SnackPosition.TOP,
-                );
-              }
-            },
-            child: const Text("Hapus", style: TextStyle(color: Colors.white)),
+              SizedBox(
+                width: 90,
+                height: 38,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: EdgeInsets.zero,
+                  ),
+
+                  onPressed: () async {
+                    final success = await controller.deleteProduct(product.id);
+
+                    if (success) {
+                      Get.back();
+
+                      Get.snackbar(
+                        "Berhasil",
+                        "Produk berhasil dihapus.",
+                        snackPosition: SnackPosition.TOP,
+                      );
+                    }
+                  },
+
+                  child: const Text(
+                    "Hapus",
+                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
