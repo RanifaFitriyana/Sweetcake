@@ -38,47 +38,68 @@ class CartView extends GetView<CartController> {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
-                const Icon(
-                  Icons.shopping_cart_outlined,
-                  size: 75,
-                  color: Colors.grey,
-                ),
-
-                const SizedBox(height: 15),
-
-                const Text(
-                  "Keranjang masih kosong",
-
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-
-                const SizedBox(height: 8),
-
-                const Text(
-                  "Yuk mulai belanja sekarang!",
-
-                  style: TextStyle(color: Colors.grey, fontSize: 13),
-                ),
-
-                const SizedBox(height: 20),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-
-                    foregroundColor: Colors.white,
+                Container(
+                  width: 130,
+                  height: 130,
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary.withOpacity(0.4),
+                    shape: BoxShape.circle,
                   ),
+                  child: const Icon(
+                    Icons.shopping_cart_outlined,
+                    size: 70,
+                    color: AppColors.primary,
+                  ),
+                ),
 
-                  onPressed: () {
-                    Get.offAllNamed(Routes.HOME);
-                  },
+                const SizedBox(height: 28),
 
-                  child: const Text(
-                    "Belanja Sekarang",
+                const Text(
+                  "Keranjang Masih Kosong",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
 
-                    style: TextStyle(fontSize: 14),
+                const SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  child: Text(
+                    "Belum ada produk di keranjang.\nYuk pilih kue favoritmu sekarang!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 28),
+
+                SizedBox(
+                  width: 190,
+                  height: 48,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    onPressed: () {
+                      Get.offAllNamed(Routes.CATEGORY);
+                    },
+                    icon: const Icon(Icons.storefront_rounded),
+                    label: const Text(
+                      "Belanja Sekarang",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -91,12 +112,9 @@ class CartView extends GetView<CartController> {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(20),
-
                 itemCount: controller.cartItems.length,
-
                 itemBuilder: (context, index) {
                   final item = controller.cartItems[index];
-
                   return cartItem(item, index);
                 },
               ),

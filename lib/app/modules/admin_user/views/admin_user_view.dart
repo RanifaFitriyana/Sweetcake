@@ -23,6 +23,7 @@ class AdminUserView extends GetView<AdminUserController> {
           style: TextStyle(
             color: AppColors.primary,
             fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
         iconTheme: const IconThemeData(color: AppColors.primary),

@@ -226,48 +226,96 @@ class CheckoutView extends GetView<CheckoutController> {
           /// DETAIL PESANAN
           const Text(
             "Detail Pesanan",
-
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
 
           const SizedBox(height: 15),
 
           Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18),
+            ),
             child: Padding(
-              padding: const EdgeInsets.all(15),
-
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Obx(
                 () => Column(
                   children: controller.cartController.cartItems.map((item) {
-                    return ListTile(
-                      contentPadding: EdgeInsets.zero,
-
-                      title: Text(
-                        item["name"],
-
-                        style: const TextStyle(
-                          fontSize: 14,
-
-                          fontWeight: FontWeight.w600,
-                        ),
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
                       ),
-
-                      subtitle: Text(
-                        "x${item["qty"]}",
-
-                        style: const TextStyle(fontSize: 13),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(14),
                       ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          /// Gambar Produk
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              item["image"],
+                              width: 65,
+                              height: 65,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) {
+                                return Container(
+                                  width: 65,
+                                  height: 65,
+                                  color: Colors.grey.shade300,
+                                  child: const Icon(Icons.image),
+                                );
+                              },
+                            ),
+                          ),
 
-                      trailing: Text(
-                        controller.cartController.formatPrice(
-                          item["price"] * item["qty"],
-                        ),
+                          const SizedBox(width: 12),
 
-                        style: const TextStyle(
-                          fontSize: 13,
+                          /// Informasi Produk
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item["name"],
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
 
-                          fontWeight: FontWeight.bold,
-                        ),
+                                const SizedBox(height: 6),
+
+                                Text(
+                                  "${item["qty"]} x ${controller.cartController.formatPrice(item["price"])}",
+                                  style: TextStyle(
+                                    color: Colors.grey.shade700,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(width: 10),
+
+                          /// Total Harga
+                          Text(
+                            controller.cartController.formatPrice(
+                              item["price"] * item["qty"],
+                            ),
+                            style: const TextStyle(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   }).toList(),

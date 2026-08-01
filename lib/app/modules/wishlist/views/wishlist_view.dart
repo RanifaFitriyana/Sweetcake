@@ -37,46 +37,77 @@ class WishlistView extends GetView<WishlistController> {
       body: Obx(() {
         if (controller.wishlist.isEmpty) {
           return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.favorite_border,
-                  size: 90,
-                  color: Colors.grey.shade400,
-                ),
-
-                const SizedBox(height: 20),
-
-                const Text(
-                  "Wishlist masih kosong",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-
-                const SizedBox(height: 8),
-
-                const Text(
-                  "Tambahkan produk favoritmu.",
-                  style: TextStyle(color: Colors.grey),
-                ),
-
-                const SizedBox(height: 25),
-
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 130,
+                    height: 130,
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary.withOpacity(0.4),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.favorite_border_rounded,
+                      size: 70,
+                      color: AppColors.primary,
+                    ),
                   ),
-                  onPressed: () {
-                    Get.offAllNamed(Routes.CATEGORY);
-                  },
-                  child: const Text("Mulai Belanja"),
-                ),
-              ],
+
+                  const SizedBox(height: 28),
+
+                  const Text(
+                    "Wishlist Masih Kosong",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                  const SizedBox(height: 10),
+
+                  Text(
+                    "Produk favorit yang kamu simpan\nakan muncul di sini.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+
+                  SizedBox(
+                    width: 190,
+                    height: 48,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      onPressed: () {
+                        Get.offAllNamed(Routes.CATEGORY);
+                      },
+                      icon: const Icon(Icons.storefront_rounded),
+                      label: const Text(
+                        "Mulai Belanja",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }
-
         return GridView.builder(
           padding: const EdgeInsets.all(20),
           itemCount: controller.wishlist.length,

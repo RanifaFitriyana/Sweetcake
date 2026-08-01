@@ -13,11 +13,18 @@ class OrderView extends GetView<OrderController> {
       backgroundColor: AppColors.background,
 
       appBar: AppBar(
-        title: const Text("Pesanan Saya"),
-        centerTitle: true,
         backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
         elevation: 0,
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          "Pesanan Saya",
+          style: TextStyle(
+            color: AppColors.primary,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
 
       body: SafeArea(
@@ -50,7 +57,6 @@ class OrderView extends GetView<OrderController> {
 
           return RefreshIndicator(
             onRefresh: controller.getMyOrders,
-
             child: ListView.builder(
               padding: EdgeInsets.fromLTRB(
                 16,
@@ -58,16 +64,13 @@ class OrderView extends GetView<OrderController> {
                 16,
                 MediaQuery.of(context).padding.bottom + 20,
               ),
-
               itemCount: controller.orders.length,
-
               itemBuilder: (context, index) {
                 final order = controller.orders[index];
 
                 return Container(
                   margin: const EdgeInsets.only(bottom: 16),
                   padding: const EdgeInsets.all(16),
-
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(18),
@@ -75,10 +78,8 @@ class OrderView extends GetView<OrderController> {
                       BoxShadow(color: Colors.grey.shade200, blurRadius: 8),
                     ],
                   ),
-
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-
                     children: [
                       /// STATUS
                       Row(
@@ -90,9 +91,7 @@ class OrderView extends GetView<OrderController> {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
-
                           const SizedBox(width: 10),
-
                           Flexible(
                             child: Align(
                               alignment: Alignment.centerRight,
@@ -104,7 +103,9 @@ class OrderView extends GetView<OrderController> {
 
                       const Divider(),
 
+                      /// ===============================
                       /// PRODUK
+                      /// ===============================
                       const Text(
                         "Produk",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -116,20 +117,16 @@ class OrderView extends GetView<OrderController> {
                         children: order.items.map((item) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 12),
-
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-
                               children: [
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
-
                                   child: Image.network(
                                     item.image,
                                     width: 60,
                                     height: 60,
                                     fit: BoxFit.cover,
-
                                     errorBuilder: (_, __, ___) {
                                       return Container(
                                         width: 60,
@@ -147,13 +144,11 @@ class OrderView extends GetView<OrderController> {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-
                                     children: [
                                       Text(
                                         item.name,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -175,9 +170,45 @@ class OrderView extends GetView<OrderController> {
                           );
                         }).toList(),
                       ),
+
+                      const SizedBox(height: 10),
+
+                      /// ===============================
+                      /// TOTAL
+                      /// ===============================
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Total",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                formatPrice(order.total),
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 18),
+
                       const Divider(),
 
+                      const SizedBox(height: 18),
+
+                      /// ===============================
                       /// ALAMAT
+                      /// ===============================
                       const Text(
                         "Alamat Pengiriman",
                         style: TextStyle(fontWeight: FontWeight.bold),
@@ -193,33 +224,9 @@ class OrderView extends GetView<OrderController> {
 
                       const SizedBox(height: 16),
 
-                      /// TOTAL
-                      Row(
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              "Total",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ),
-
-                          Flexible(
-                            child: Text(
-                              formatPrice(order.total),
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(height: 16),
-
+                      /// ===============================
                       /// BUTTON SELESAI
+                      /// ===============================
                       if (order.status == "Dalam Pengiriman")
                         SizedBox(
                           width: double.infinity,

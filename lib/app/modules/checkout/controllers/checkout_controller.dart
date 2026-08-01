@@ -8,7 +8,7 @@ import '../../../data/models/address_model.dart';
 import '../../../data/models/order_model.dart';
 import '../../../data/services/order_service.dart';
 import '../../../routes/app_pages.dart';
-
+import '../../../theme/app_colors.dart';
 import '../../address/controllers/address_controller.dart';
 import '../../cart/controllers/cart_controller.dart';
 
@@ -297,48 +297,118 @@ class CheckoutController extends GetxController {
       return;
     }
 
-    Get.defaultDialog(
-      title: "Pembayaran",
+    Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        contentPadding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
 
-      radius: 15,
-
-      content: Column(
-        children: [
-          Text(
-            paymentMethod.value == "COD"
-                ? "Pesanan akan dibayar saat diterima."
-                : "Silakan lakukan pembayaran.",
-
-            textAlign: TextAlign.center,
-          ),
-
-          const SizedBox(height: 20),
-
-          SizedBox(
-            width: double.infinity,
-
-            child: ElevatedButton(
-              onPressed: () async {
-                Get.back();
-
-                if (paymentMethod.value == "COD") {
-                  await createOrderCOD();
-                } else {
-                  final order = createOrderData();
-
-                  Get.toNamed(Routes.UPLOAD_PAYMENT, arguments: order);
-                }
-              },
-
-              child: Text(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: AppColors.secondary,
+              child: Icon(
                 paymentMethod.value == "COD"
-                    ? "Konfirmasi Pesanan"
-                    : "Upload Bukti Pembayaran",
+                    ? Icons.local_shipping_rounded
+                    : Icons.payments_rounded,
+                color: AppColors.primary,
+                size: 30,
               ),
             ),
-          ),
-        ],
+
+            const SizedBox(height: 18),
+
+            const Text(
+              "Konfirmasi Pembayaran",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              paymentMethod.value == "COD"
+                  ? "Pesanan akan dibayar saat diterima oleh pelanggan.\nApakah Anda ingin melanjutkan?"
+                  : "Pastikan metode pembayaran yang dipilih sudah benar.\nSelanjutnya Anda akan mengunggah bukti pembayaran.",
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black54,
+                height: 1.5,
+              ),
+            ),
+
+            const SizedBox(height: 24),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 95,
+                  height: 40,
+                  child: OutlinedButton(
+                    onPressed: () => Get.back(),
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.green),
+                      foregroundColor: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: const Text(
+                      "Batal",
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                SizedBox(
+                  width: 150,
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Get.back();
+
+                      if (paymentMethod.value == "COD") {
+                        await createOrderCOD();
+                      } else {
+                        final order = createOrderData();
+
+                        Get.toNamed(Routes.UPLOAD_PAYMENT, arguments: order);
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: Text(
+                      paymentMethod.value == "COD" ? "Konfirmasi" : "Lanjut",
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
+      barrierDismissible: false,
     );
   }
 
