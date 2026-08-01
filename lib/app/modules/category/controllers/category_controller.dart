@@ -58,6 +58,7 @@ class CategoryController extends GetxController {
   void changeCategory(int index) {
     selectedCategory.value = index;
     filterProducts();
+    update();
   }
 
   void filterProducts() {

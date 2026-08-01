@@ -86,7 +86,7 @@ class CategoryView extends GetView<CategoryController> {
                     itemCount: controller.categories.length,
 
                     itemBuilder: (context, index) {
-                      final active = controller.selectedCategory == index;
+                      final active = controller.selectedCategory.value == index;
 
                       return GestureDetector(
                         onTap: () {
